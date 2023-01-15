@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Yoonstagram</title>
+  <link href="/style/common.css" rel="stylesheet" type="text/css" />
+  <link href="/style/login.css" rel="stylesheet" type="text/css" />
+
+  <!-- favicon -->
+  <link rel="icon" href="/img/favicon.png">
+  <link rel="instagram-icon" href="/img/favicon.png">
+</head>
+<body>
+<div class="container">
+  <form th:action="@{/login}" th:object="${LoginUserDto}" method="post">
+    <img class="logo_instagram" src="/img/logo_text.png" alt="instagram_logo">
+    <input type="text" class="username" name="username" id="username" placeholder="이메일">
+    <input type="password" class="password" name="password" id="password" placeholder="비밀번호">
+    <input type="submit" id="btn_login" value="로그인" />
+  </form>
+  <span class="login_input_check" th:if="${param.error}" > 입력한 계정을 찾을 수 없습니다. </span>
+  <!-- Oauth 소셜로그인 -->
+  <div class="login_facebook">
+    <img class="logo_facebook" src="/img/facebook_icon.png">
+    <a href="/login" class="btn_facebook">Facebook으로 로그인</a>
+  </div>
+  <!-- Oauth 소셜로그인end -->
+  <a href="/signUp" class="button_signup">계정이 없으신가요? 가입하기</a>
+</div>
+</body>
+</html>

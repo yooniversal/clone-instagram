@@ -1,6 +1,6 @@
 package yoonstagram.instagram.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +17,7 @@ public class User {
 
     private String name;
     private String username;
+    private String password;
     private String description;
     private String link;
 

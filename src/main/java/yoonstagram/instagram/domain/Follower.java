@@ -1,6 +1,6 @@
 package yoonstagram.instagram.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class Follower {
