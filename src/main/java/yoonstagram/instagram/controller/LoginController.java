@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.domain.dto.LoginUserDto;
 import yoonstagram.instagram.domain.dto.UserDto;
 import yoonstagram.instagram.service.UserService;
@@ -49,7 +48,21 @@ public class LoginController {
     }
 
     @PostMapping("/signUp")
-    public String signUp(@ModelAttribute("userDto") UserDto userDto) {
+    public String signUp(@Valid UserDto userDto, BindingResult result) {
+        if(result.hasErrors()) {
+            return "signUp";
+        }
+
+        if (userService.isNameExist(userDto.getName())) {
+            result.rejectValue("name", "name.exist", "같은 이름이 존재합니다.");
+            return "signUp";
+        }
+
+        if (userService.isEmailExist(userDto.getEmail())) {
+            result.rejectValue("email", "email.exist", "같은 이메일이 존재합니다.");
+            return "signUp";
+        }
+
         userService.join(userDto.toEntity());
         return "redirect:/login";
     }

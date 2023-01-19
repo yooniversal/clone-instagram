@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/common :: head('Instargram')"></head>
+<body>
+<head th:replace="layout/common :: menu('menu')"></head>
+<!--프로필셋팅 메인-->
+<main class="main">
+  <!--프로필셋팅 섹션-->
+  <section class="setting-container">
+    <!--프로필셋팅 아티클-->
+    <article class="setting__content">
+      <!--프로필셋팅 아이디 영역-->
+      <div class="content-item__01">
+        <div class="item__img">
+          <img th:src="@{${'/profile_imgs/' + userImageUrl}}" onerror="this.src='/img/default_profile.jpg';"/>
+        </div>
+        <div class="item__username">
+          <h2 th:text="${userForm.username}" ></h2>
+        </div>
+      </div>
+      <!--프로필 셋팅 아이디 영역 end-->
+
+      <!--프로필 수정-->
+      <form id="profileUpdate" th:action="@{/user/update}" th:object="${userForm}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}" name="id" id="id">
+        <div class="content-item__02">
+          <div class="item__title">이메일</div>
+          <div class="item__input">
+            <input class="input_update" type="text" th:field="*{email}" name="email" id="email"/>
+          </div>
+        </div>
+        <div class="content-item__02">
+          <div class="item__title">프로필 사진</div>
+          <div class="item__input">
+            <input class="input_update" type="file" name="imageUrl" id="profileImgUrl" />
+          </div>
+        </div>
+        <div class="content-item__03">
+          <div class="item__title">이름</div>
+          <div class="item__input">
+            <input class="input_update" type="text" th:field="*{username}" name="name" id="name" placeholder="유저네임" required="required" />
+          </div>
+        </div>
+        <div class="content-item__04">
+          <div class="item__title">패스워드</div>
+          <div class="item__input">
+            <input class="input_update" type="password" th:field="*{password}" name="password" id="password" placeholder="패스워드" required="required" />
+          </div>
+        </div>
+        <div class="content-item__05">
+          <div class="item__title">웹사이트</div>
+          <div class="item__input">
+            <input class="input_update" type="text" th:field="*{link}" name="website" id="website" placeholder="웹 사이트"/>
+          </div>
+        </div>
+        <div class="content-item__06">
+          <div class="item__title">소개</div>
+          <div class="item__input">
+            <textarea class="input_update" th:field="*{description}" name="title" id="title" rows="3"> </textarea>
+          </div>
+        </div>
+        <div class="content-item__09">
+          <div class="item__title">전화번호</div>
+          <div class="item__input">
+            <input class="input_update" type="text" th:field="*{phone}"  name="phone" id="phone" placeholder="전화번호" />
+          </div>
+        </div>
+
+        <!--제출 버튼-->
+        <div class="content-item__11">
+          <div class="item__input">
+            <button id="btn_update">제출</button>
+          </div>
+        </div>
+        <!--제출 버튼 end-->
+      </form>
+      <!--프로필 수정 form end-->
+    </article>
+  </section>
+</main>
+<footer th:replace="layout/common :: footer('footer')"></footer>
+</body>
+</html>

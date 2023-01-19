@@ -1,14 +1,24 @@
 package yoonstagram.instagram.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import yoonstagram.instagram.controller.UserForm;
+import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.repository.UserRepository;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -19,22 +29,24 @@ public class UserService {
 
     @Transactional
     public Long join(User user) {
-        // ID 중복 검증
-        validateDuplicateUser(user);
-
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return user.getId();
     }
 
-    private void validateDuplicateUser(User user) {
-        List<User> findUsers = userRepository.findByName(user.getName());
-        if(!findUsers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        }
+    public boolean isNameExist(String name) {
+        List<User> findUsers = userRepository.findByName(name);
+        if(!findUsers.isEmpty()) return true;
+        return false;
     }
 
-    public List<User> findMembers() {
+    public boolean isEmailExist(String email) {
+        List<User> findUsers = userRepository.findByEmail(email);
+        if(!findUsers.isEmpty()) return true;
+        return false;
+    }
+
+    public List<User> findUsers() {
         return userRepository.findAll();
     }
 
@@ -52,4 +64,35 @@ public class UserService {
         User user = userRepository.findOneById(id);
         user.setUsername(username);
     }
+
+    @Value("${profileImage.path}")
+    private String uploadProfileFolder;
+
+    @Transactional
+    public void updateProfile(UserForm form, MultipartFile file) {
+        User user = userRepository.findOneById(form.getId());
+
+        if(file != null && !file.isEmpty()) { //파일이 업로드 되었는지 확인
+            String imageFileName = user.getId() + "_" + file.getOriginalFilename();
+            Path imageFilePath = Paths.get(uploadProfileFolder + imageFileName);
+            try {
+                if (!user.getImageUrl().equals("null.jpg")) { // 이미 프로필 사진이 있을경우
+                    File currentfile = new File(uploadProfileFolder + user.getImageUrl());
+                    currentfile.delete(); // 원래파일 삭제
+                }
+                Files.write(imageFilePath, file.getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            user.setImageUrl(imageFileName);
+        }
+
+        user.setEmail(form.getEmail());
+        user.setUsername(form.getUsername());
+        user.setPassword(bCryptPasswordEncoder.encode(form.getPassword()));
+        user.setLink(form.getLink());
+        user.setDescription(form.getDescription());
+        user.setPhone(form.getPhone());
+    }
+
 }

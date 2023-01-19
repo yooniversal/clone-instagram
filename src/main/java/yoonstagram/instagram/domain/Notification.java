@@ -19,9 +19,6 @@ public class Notification {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private Image postImage;
-
+    private String imageUrl;
     private LocalDateTime time;
 }

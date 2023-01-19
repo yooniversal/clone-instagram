@@ -15,10 +15,16 @@
 <div class="container">
   <img class="logo_instagram" src="/img/logo_text.png" alt="instagram_logo">
   <form th:action="@{/signUp}" method="post" th:object="${userDto}">
-    <input type="email" class="input_signup" name="email" id="email" placeholder="이메일 주소" required="required"  maxlength="30"/>
-    <input type="text" class="input_signup" name="phone" id="phone" placeholder="휴대폰 번호" required="required" />
-    <input type="text" class="input_signup" name="name" id="name" placeholder="사용자 이름" required="required" />
-    <input type="password" class="input_signup" name="password" id="password" placeholder="비밀번호" required="required" />
+    <input type="email" th:field="*{email}" class="input_signup" name="email" id="email" placeholder="이메일 주소" required="required" maxlength="30"/>
+    <div th:if="${#fields.hasErrors('email')}" class="validation-error-msg" th:errors="*{email}">
+      <p th:errors="*{email}"></p>
+    </div>
+    <input type="text" th:field="*{phone}" class="input_signup" name="phone" id="phone" placeholder="휴대폰 번호" required="required" />
+    <input type="text" th:field="*{name}" class="input_signup" name="name" id="name" placeholder="사용자 이름" required="required" />
+    <div th:if="${#fields.hasErrors('name')}" class="validation-error-msg" th:errors="*{name}">
+      <p th:errors="*{name}"></p>
+    </div>
+    <input type="password" th:field="*{password}" class="input_signup" name="password" id="password" placeholder="비밀번호" required="required" />
     <button type="submit" id="btn_signup"> 가입 </button>
   </form>
   <span class="email_input_check" th:if="${param.error}" > 이메일 계정이 이미 존재합니다. </span>

@@ -27,7 +27,12 @@ public class SecurityConfiguration {
         /* @formatter:off */
         http
                 .authorizeRequests()
-                        .antMatchers("/signUp", "/img/**", "/js/**", "/style/**", "/layout/**").permitAll() // 설정한 리소스의 접근을 인증절차 없이 허용
+                        .antMatchers("/signUp",
+                                "/img/**",
+                                "/js/**",
+                                "/style/**",
+                                "/layout/**"
+                                ).permitAll() // 설정한 리소스의 접근을 인증절차 없이 허용
                         .anyRequest().authenticated() // 그 외 모든 리소스를 의미하며 인증 필요
                         .and()
                 .formLogin()
@@ -42,6 +47,8 @@ public class SecurityConfiguration {
                 .deleteCookies("JSESSIONID") // 로그아웃 시 JSESSIONID 제거
                 .invalidateHttpSession(true) // 로그아웃 시 세션 종료
                 .clearAuthentication(true); // 로그아웃 시 권한 제거
+
+        http.csrf().disable();
 
         return http.build();
         /* @formatter:on */
