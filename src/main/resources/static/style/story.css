@@ -134,6 +134,8 @@ article, .section-story {
     border-radius: 3px;
     border: 1px solid #DBDBDB;
     margin-top: 50px;
+    margin-left: 150px;
+    width: 400px;
 }
 /*article {*/
 /*    margin-bottom: 60px;*/
@@ -167,9 +169,12 @@ header {
     border-radius: 100%;
     align-content: center;
 }
+.main-image {
+    text-align: center;
+}
 .main-image img {
-    width: 612px;
-    height: 612px;
+    width: 312px;
+    height: 312px;
     object-fit: cover;
 }
 .main-id {
@@ -256,7 +261,7 @@ div.time-log span {
 /* comment input */
 .input-comment {
     font-size: 14px;
-    width: 560px;
+    width: 346px;
     height: 18px;
     padding: 28px 16px;
     border-style: none;
@@ -377,8 +382,16 @@ ul.story-list .profile-text {
 }
 
 .tag-span {
-    color:blue;
+    color:#0074cc;
     cursor:pointer;
+}
+.post-time {
+    font-size: 0.8em;
+    color: gray;
+}
+.post-text-area {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 

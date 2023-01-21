@@ -17,9 +17,9 @@ storyLoad();
 function getLikesItem(post) {
     let item = `
         <div class="img-box" onclick="postPopup(${post.id}, '.modal-post')" >                   
-            <img src="/upload/${post.postImgUrl}" onerror="this.src='/img/default_profile.jpg';" />
+            <img src="/upload/${post.imageUrl}" onerror="this.src='/img/default_profile.jpg';" />
                 <div class="comment">
-                    <a> <i class="fas fa-heart"></i><span>${post.likesCount}</span></a>
+                    <a> <i class="fas fa-heart"></i><span>${post.likeCount}</span></a>
                 </div>
         </div>
     `;
@@ -67,9 +67,9 @@ function getPostModalInfo(postInfoDto) {
 	    <div class="post-info">
 	        <div class="text"> `;
     if(postInfoDto.likeState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
     } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
     }
     item += `
             </div>
@@ -86,11 +86,11 @@ function getPostModalInfo(postInfoDto) {
             </div>
         </div>
         <div class="subscribe__img">
-            <span>${postInfoDto.createdate.toLocaleString()}</span>
+            <span>${postInfoDto.date.toLocaleString()}</span>
         </div>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
-    postInfoDto.commentList.forEach((comment)=>{
+    postInfoDto.comments.forEach((comment)=>{
         item += `<li id="storyCommentItem-${comment.id}">
                                <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
         if(principalId == comment.user.id) {

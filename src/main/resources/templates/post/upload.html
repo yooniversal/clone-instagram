@@ -25,8 +25,8 @@
 
       <!--사진 설명 + 업로드 버튼-->
       <div class="upload-form-detail">
-        <textarea class="input_upload" th:text="${postDescription}" name="text" id="text" rows="5"> </textarea>
-        <input type="text" placeholder="태그. 공백 없이 ,로 구분하여 입력해주세요." name="tag" id="tag" />
+        <textarea class="input_upload" type="text" th:text="${UploadPostDto.text}" name="text" id="text" rows="5"> </textarea>
+        <input type="text" th:text="${UploadPostDto.tag}" placeholder="태그. 공백 없이 ,로 구분하여 입력해주세요." name="tag" id="tag" />
         <button class="cta blue" >업로드</button>
       </div>
       <!--사진 설명 end-->

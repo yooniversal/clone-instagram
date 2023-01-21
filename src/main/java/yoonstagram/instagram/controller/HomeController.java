@@ -3,11 +3,13 @@ package yoonstagram.instagram.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import yoonstagram.instagram.config.auth.PrincipalDetails;
 import yoonstagram.instagram.domain.Follower;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.domain.dto.UserProfileDto;
@@ -60,18 +62,4 @@ public class HomeController {
         return "hello";
     }
 
-    @GetMapping("/common")
-    public String common(Model model) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Long currentUserId = Long.valueOf(userDetails.getUsername());
-
-        User currentUser = userService.findOneById(currentUserId);
-        model.addAttribute("currentUserId", currentUser.getId());
-        model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
-        model.addAttribute("currentUsername", currentUser.getUsername());
-
-        return "/layout/common";
-    }
 }

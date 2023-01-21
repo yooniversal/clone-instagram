@@ -100,11 +100,11 @@ function getPostModalInfo(postInfoDto) {
             </div>
         </div>
         <div class="subscribe__img">
-            <span>${postInfoDto.createdate.toLocaleString()}</span>
+            <span>${postInfoDto.date.toLocaleString()}</span>
         </div>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
-    postInfoDto.commentList.forEach((comment)=>{
+    postInfoDto.comments.forEach((comment)=>{
         item += `<li id="storyCommentItem-${comment.id}">
                                <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
         if(principalId == comment.user.id) {

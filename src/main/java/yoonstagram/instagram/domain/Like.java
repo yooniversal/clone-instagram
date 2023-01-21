@@ -8,11 +8,17 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-public class Follower {
+@Table(name = "likes")
+public class Like {
 
     @Id @GeneratedValue
-    @Column(name = "follower_id")
+    @Column(name = "like_id")
     private Long id;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @JsonIgnore
     @ManyToOne

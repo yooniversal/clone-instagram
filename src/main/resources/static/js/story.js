@@ -22,26 +22,26 @@ function getStoryItem(post) {
         <article>
             <header>
                 <div class="profile-of-article">
-                    <a href="/user/profile?id=${post.user.id}"><img class="img-profile pic" src="/profile_imgs/${post.user.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>
+                    <a href="/user/profile?id=${post.user.id}"><img class="img-profile pic" src="/profile_imgs/${post.user.imageUrl}" onerror="this.src='/img/default_profile.jpg'""></a>
                     <span class="userID main-id point-span" >${post.user.name}</span>
                 </div>
             </header>
             <div class="main-image">
-                <img src="/upload/${post.postImgUrl}" class="mainPic">
+                <img src="/upload/${post.imageUrl}" class="mainPic">
             </div>
             <div class="icons-react">
                 <div class="icons-left">`;
-            if(post.likesState) {
-                item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likesCount}</i>`;
+            if(post.likeState) {
+                item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likeCount}</i>`;
             } else {
-                item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likesCount}</i>`;
+                item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likeCount}</i>`;
             }
             item += `
                 </div>
             </div>
             <div class="reaction">
                 <div class="text">
-	                <span>${post.text}</span>
+	                <span>${post.description}</span>
                 </div>
 	            <div class="tag">`;
                     let arr = post.tag.split(',');
@@ -52,12 +52,12 @@ function getStoryItem(post) {
                     item += `
                 </div>
                 <div class="subscribe__img">
-                    <span>${post.createDate.toLocaleString()}</span>
+                    <span>${post.date.toLocaleString()}</span>
                 </div>
                 <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${post.id}">`;
 
-                post.commentList.forEach((comment)=>{
+                post.comment.forEach((comment)=>{
                     item += `<li id="storyCommentItem-${comment.id}">
                                 <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
                                 if(principalId == comment.user.id) {

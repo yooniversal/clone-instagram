@@ -113,12 +113,56 @@ function postPopup(postId, obj) {
     }).done(res => {
         let item = getPostModalInfo(res);
         $("#postInfoModal").append(item);
+
+        let modal = document.getElementById(obj.toLocaleString().substring(1));
+        console.log(obj.toLocaleString().substring(1))
+
+        modal.addEventListener("click", function(e){
+            if (!$("#postInfoModal").is(e.target) && $("#postInfoModal").has(e.target).length === 0) {
+                modal.style.display = "none";
+            }
+            //
+        });
+
     }).fail(error => {
         console.log("post 정보 불러오기 오류", error);
     });
 }
 
 function getPostModalInfo(postInfoDto) {
+    let diffentTime = function () {
+        const currentTime = new Date();
+        const postTimeStamp = new Date(postInfoDto.date);
+        const postTimeInMillis = postTimeStamp.getTime();
+        const postTime = new Date(postTimeInMillis);
+
+        const timeDiff = currentTime - postTime;
+        const msDiff = timeDiff;
+        const secDiff = msDiff / 1000;
+        const minDiff = secDiff / 60;
+        const hourDiff = minDiff / 60;
+        const dayDiff = hourDiff / 24;
+        const monthDiff = dayDiff / 30;
+        const yearDiff = monthDiff / 12;
+
+        let timeAgo = "";
+        if (yearDiff >= 1) {
+            timeAgo = Math.floor(yearDiff) + "년 전";
+        } else if (monthDiff >= 1) {
+            timeAgo = Math.floor(monthDiff) + "개월 전";
+        } else if (dayDiff >= 1) {
+            timeAgo = Math.floor(dayDiff) + "일 전";
+        } else if (hourDiff >= 1) {
+            timeAgo = Math.floor(hourDiff) + "시간 전";
+        } else if (minDiff >= 1) {
+            timeAgo = Math.floor(minDiff) + "분 전";
+        } else {
+            timeAgo = "지금";
+        }
+
+        return timeAgo;
+    }
+
     let item = `
     <div class="subscribe-header">
             <a href="/user/profile?id=${postInfoDto.postUploader.id}"><img class="post-img-profile pic" src="/profile_imgs/${postInfoDto.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>  
@@ -128,6 +172,7 @@ function getPostModalInfo(postInfoDto) {
         item += `<button class="edit" onclick="location.href='/post/update/${postInfoDto.id}'"><i class="far fa-edit"></i></button>`
     }
     item += `
+
     </div>
     <div class="post-box">
 	    <div class="subscribe__img">
@@ -135,18 +180,18 @@ function getPostModalInfo(postInfoDto) {
 	    </div>
 	    <div class="post-div">
 	    <div class="post-info">
-	        <div class="text"> `;
+	        <div class="text post-text-area"> `;
             if(postInfoDto.likeState) {
-                item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+                item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})"> ${postInfoDto.likeCount}</i>`;
             } else {
-                item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+                item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})"> ${postInfoDto.likeCount}</i>`;
             }
             item += `
             </div>
-	        <div class="text">
+	        <div class="text post-text-area">
 	            <span>${postInfoDto.text}</span>
             </div>
-	        <div class="tag">`;
+	        <div class="tag post-text-area">`;
                     let arr = postInfoDto.tag.split(',');
 
                     for(let i = 0; i < arr.length; i++) {
@@ -156,11 +201,12 @@ function getPostModalInfo(postInfoDto) {
             </div>
         </div>
         <div class="subscribe__img">
-            <span>${postInfoDto.createdate.toLocaleString()}</span>
+            <span class="post-time">${diffentTime()}</span>
         </div>
+        <hr>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
-                    postInfoDto.commentList.forEach((comment)=>{
+                    postInfoDto.comments.forEach((comment)=>{
                     item += `<li id="storyCommentItem-${comment.id}">
                                <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
                                 if(principalId == comment.user.id) {
@@ -245,7 +291,7 @@ function addComment(postId) {
         let comment = res;
         let content = `
 		    <li id="storyCommentItem-${comment.id}">
-                 <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>
+                 <span><span class="point-span userID">${comment.user.name}</span>${comment.content}</span>
                  <button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
                     <i class="fas fa-times"></i>
                  </button>
@@ -269,4 +315,14 @@ function deleteComment(commentId) {
     }).fail(error=>{
         console.log("오류", error);
     });
+}
+
+function wrapWindowByMask(){
+    var maskHeight = $(document).height();
+    var maskWidth = $(window).width();
+
+    $('#mask').css({'width':maskWidth,'height':maskHeight});
+
+    // $('#mask').fadeIn(1000);
+    // $('#mask').fadeTo("slow",0.8);
 }

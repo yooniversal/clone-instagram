@@ -80,7 +80,7 @@
   <!--로그아웃, 회원정보 변경 모달 end-->
 
   <!--포스트 상세 정보 모달-->
-  <div class="modal-post">
+  <div class="modal-post" id="modal-post">
     <div class="subscribe">
       <div class="subscribe-list" id="postInfoModal"></div>
     </div>
@@ -95,7 +95,7 @@
       <button >취소</button>
     </div>
   </div>
-  <!--프로필사진 바꾸기 모달end-->
+  <!--프로필사진 바꾸기 모달 end-->
 
   <div class="modal-follower">
     <div class="subscribe">
@@ -120,6 +120,7 @@
       <div class="subscribe-list" id="followingModalList"></div>
     </div>
   </div>
+  <div id="#mask"></div>
   <footer th:replace="layout/common :: footer('footer')"></footer>
 </main>
 <script th:inline="javascript">

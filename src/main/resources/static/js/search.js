@@ -3,14 +3,16 @@ let page = 0;
 
 function storyLoad() {
     $.ajax({
-        url: `/api/post/tag?tag=${tag}&page=${page}`,
+        //url: `/api/post/tag?tag=${tag}&page=${page}`,
+        url: `/api/post/tag?tag=${tag}`,
         dataType: "json"
     }).done(res => {
         if(res.totalElements == 0) {
             alert("검색 결과가 없습니다.");
             window.history.back();
         }
-        res.content.forEach((post) => {
+        let cnt = 0;
+        res.forEach((post) => {
             let postItem = getStoryItem(post);
             $("#feeds").append(postItem);
         });
@@ -26,8 +28,11 @@ function getStoryItem(post) {
         <article>
             <header>
                 <div class="profile-of-article">
-                    <a href="/user/profile?id=${post.user.id}"><img class="img-profile pic" src="/profile_imgs/${post.user.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>
-                    <span class="userID main-id point-span" >${post.user.name}</span>
+                    <a href="/user/profile?id=${post.postUploader.id}"><img class="img-profile pic" src="/profile_imgs/${post.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>
+                    <span class="userID main-id point-span" >${post.postUploader.name}</span>
+                    <div class="subscribe__img post-text-area post-time">
+                        <span>• ${diffentTime(post)}</span>
+                    </div>
                 </div>
             </header>
             <div class="main-image">
@@ -35,19 +40,19 @@ function getStoryItem(post) {
             </div>
             <div class="icons-react">
                 <div class="icons-left">`;
-    if(post.likesState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likesCount}</i>`;
+    if(post.likeState) {
+        item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})"> ${post.likeCount}</i>`;
     } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likesCount}</i>`;
+        item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})"> ${post.likeCount}</i>`;
     }
     item += `
                 </div>
             </div>
             <div class="reaction">
-                <div class="text">
+                <div class="text post-text-area">
 	                <span>${post.text}</span>
                 </div>
-	            <div class="tag">`;
+	            <div class="tag post-text-area">`;
     let arr = post.tag.split(',');
 
     for(let i = 0; i < arr.length; i++) {
@@ -55,15 +60,12 @@ function getStoryItem(post) {
     }
     item += `
                 </div>
-                <div class="subscribe__img">
-                    <span>${post.createDate.toLocaleString()}</span>
-                </div>
                 <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${post.id}">`;
 
-    post.commentList.forEach((comment)=>{
+    post.comments.forEach((comment)=>{
         item += `<li id="storyCommentItem-${comment.id}">
-                                <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
+                                <span><span class="point-span userID">${comment.user.name}</span>${comment.content}</span>`;
         if(principalId == comment.user.id) {
             item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
                                                 <i class="fas fa-times"></i>
@@ -80,6 +82,39 @@ function getStoryItem(post) {
             </div>
         </article>`;
     return item;
+}
+
+function diffentTime(postInfoDto) {
+    const currentTime = new Date();
+    const postTimeStamp = new Date(postInfoDto.date);
+    const postTimeInMillis = postTimeStamp.getTime();
+    const postTime = new Date(postTimeInMillis);
+
+    const timeDiff = currentTime - postTime;
+    const msDiff = timeDiff;
+    const secDiff = msDiff / 1000;
+    const minDiff = secDiff / 60;
+    const hourDiff = minDiff / 60;
+    const dayDiff = hourDiff / 24;
+    const monthDiff = dayDiff / 30;
+    const yearDiff = monthDiff / 12;
+
+    let timeAgo = "";
+    if (yearDiff >= 1) {
+        timeAgo = Math.floor(yearDiff) + "년";
+    } else if (monthDiff >= 1) {
+        timeAgo = Math.floor(monthDiff) + "개월";
+    } else if (dayDiff >= 1) {
+        timeAgo = Math.floor(dayDiff) + "일";
+    } else if (hourDiff >= 1) {
+        timeAgo = Math.floor(hourDiff) + "시간";
+    } else if (minDiff >= 1) {
+        timeAgo = Math.floor(minDiff) + "분";
+    } else {
+        timeAgo = "지금";
+    }
+
+    return timeAgo;
 }
 
 // (2) 스토리 스크롤 페이징하기
@@ -112,7 +147,7 @@ function toggleLike(postId) {
         }).fail(error=>{
             console.log("오류", error);
         });
-    } else { // 좋아요취소 하겠다
+    } else { // 좋아요 취소 하겠다
         $.ajax({
             type: "delete",
             url: `/api/post/${postId}/likes`,
@@ -157,7 +192,7 @@ function addComment(postId) {
         let comment = res;
         let content = `
 		    <li id="storyCommentItem-${comment.id}">
-                 <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>
+                 <span><span class="point-span userID">${comment.user.name}</span>${comment.content}</span>
                  <button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
                     <i class="fas fa-times"></i>
                  </button>
