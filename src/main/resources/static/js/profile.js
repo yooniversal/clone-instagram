@@ -1,11 +1,11 @@
 function toggleSubscribe(toUserId, obj) {
-    if ($(obj).text() === "언팔로우") {
+    if ($(obj).text() === "팔로잉") {
         $.ajax({
             type: "delete",
             url: "/api/follow/" + toUserId,
         }).done(res => {
             $(obj).text("팔로우");
-            $(obj).toggleClass("blue");
+            // $(obj).toggleClass("blue");
         }).fail(error => {
             console.log("언팔로우 실패", error);
         });
@@ -14,8 +14,8 @@ function toggleSubscribe(toUserId, obj) {
             type: "post",
             url: "/api/follow/" + toUserId,
         }).done(res => {
-            $(obj).text("언팔로우");
-            $(obj).toggleClass("blue");
+            $(obj).text("팔로잉");
+            // $(obj).toggleClass("blue");
         }).fail(error => {
             console.log("팔로우 실패", error);
         });
@@ -64,7 +64,7 @@ function getfollowModalItem(follow) {
 	<div class="subscribe__btn">`;
     if(!follow.loginUser){
         if(follow.followState){
-            item += `<button class="cta-follow blue" onclick="toggleSubscribe(${follow.id}, this)">언팔로우</button>`;
+            item += `<button class="cta-follow blue" onclick="toggleSubscribe(${follow.id}, this)">팔로잉</button>`;
         }else{
             item += `<button class="cta-follow" onclick="toggleSubscribe(${follow.id}, this)">팔로우</button>`;
         }

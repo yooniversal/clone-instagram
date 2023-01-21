@@ -12,7 +12,7 @@
       <!--프로필셋팅 아이디 영역-->
       <div class="content-item__01">
         <div class="item__img">
-          <img th:src="@{${'/profile_imgs/' + userForm.imageUrl}}" onerror="this.src='/img/default_profile.jpg';"/>
+          <img th:src="@{${'/profile_imgs/' + userImageUrl}}" onerror="this.src='/img/default_profile.jpg';"/>
         </div>
         <div class="item__username">
           <h2 th:text="${userForm.username}" ></h2>

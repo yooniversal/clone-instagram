@@ -3,16 +3,15 @@ package yoonstagram.instagram.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import yoonstagram.instagram.config.auth.PrincipalDetails;
-import yoonstagram.instagram.domain.Follower;
+import yoonstagram.instagram.domain.Follow;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.domain.dto.UserProfileDto;
+import yoonstagram.instagram.service.FollowService;
 import yoonstagram.instagram.service.UserService;
 
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import java.util.List;
 public class HomeController {
 
     private final UserService userService;
+    private final FollowService followService;
 
     @GetMapping({ "/", "/home" })
     public String home(Model model) {
@@ -40,16 +40,17 @@ public class HomeController {
         model.addAttribute("currentUsername", currentUser.getUsername());
 
         List<User> users = userService.findUsers();
-        List<Follower> followers = currentUser.getFollowers();
+        List<User> currentUserFollowings = followService.getFollowings(currentUserId);
         List<UserProfileDto> usersWithProfileDto = new ArrayList<>();
         for(User user : users) {
             if(user.getId().equals(currentUser.getId())) {
                 continue;
             }
 
-            boolean follow = followers.contains(user);
-
-            usersWithProfileDto.add(new UserProfileDto(user));
+            boolean follow = currentUserFollowings.contains(user);
+            int followerCount = followService.getFollowers(user.getId()).size();
+            int followingCount = followService.getFollowings(user.getId()).size();
+            usersWithProfileDto.add(new UserProfileDto(user, follow, followerCount, followingCount));
         }
 
         model.addAttribute("users", usersWithProfileDto);

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.domain.dto.UserProfileDto;
+import yoonstagram.instagram.service.FollowService;
 import yoonstagram.instagram.service.PostService;
 import yoonstagram.instagram.service.UserService;
 
@@ -23,16 +24,20 @@ import yoonstagram.instagram.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final FollowService followService;
 
     @GetMapping("/user/profile")
     public String userProfile(@RequestParam Long id,
                               Model model,
                               @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User currentUser = principalDetails.getUser();
         User findUser = userService.findOneById(id);
-        UserProfileDto findUserDto = new UserProfileDto(findUser);
+        int followerCount = followService.getFollowers(findUser.getId()).size();
+        int followingCount = followService.getFollowings(findUser.getId()).size();
+        boolean follow = followService.getFollowings(currentUser.getId()).contains(findUser);
+        UserProfileDto findUserDto = new UserProfileDto(findUser, follow, followerCount, followingCount);
         model.addAttribute("findUserDto", findUserDto);
 
-        User currentUser = principalDetails.getUser();
         model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
         findUserDto.setLogin(currentUser.getId().equals(findUser.getId()));

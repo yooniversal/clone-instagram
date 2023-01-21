@@ -4,7 +4,6 @@ import lombok.*;
 import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -24,7 +23,7 @@ public class UserProfileDto {
     private boolean login;
     private String phone;
 
-    public UserProfileDto(User user) {
+    public UserProfileDto(User user, boolean follow, int followerCount, int followingCount) {
         id = user.getId();
         name = user.getName();
         username = user.getUsername();
@@ -32,9 +31,9 @@ public class UserProfileDto {
         description = user.getDescription();
         link = user.getLink();
         email = user.getEmail();
-        follow = false;
-        followerCount = user.getFollowersCount();
-        followingCount = user.getFollowingsCount();
+        this.follow = follow;
+        this.followerCount = followerCount;
+        this.followingCount = followingCount;
         posts = user.getPosts();
         postCount = user.getPostsCount();
         login = false;
