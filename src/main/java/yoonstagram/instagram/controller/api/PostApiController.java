@@ -28,27 +28,31 @@ public class PostApiController {
     public ResponseEntity<?> postInfo (
             @PathVariable("postId") Long postId,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        log.info("post id:{} user id:{}", postId, principalDetails.getUser().getId());
         return new ResponseEntity<>(postService.getPostInfoDto(postId, principalDetails.getUser().getId()), HttpStatus.OK);
     }
 
     @PostMapping("/post/{postId}/likes")
-    public ResponseEntity<?> likes(@PathVariable long postId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> likes(@PathVariable long postId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         likeService.likes(postId, principalDetails.getUser().getId());
         return new ResponseEntity<>("좋아요 성공", HttpStatus.OK);
     }
 
     @DeleteMapping("/post/{postId}/likes")
-    public ResponseEntity<?> unLikes(@PathVariable long postId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> unLikes(@PathVariable long postId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         likeService.unLikes(postId, principalDetails.getUser().getId());
         return new ResponseEntity<>("좋아요 취소 성공", HttpStatus.OK);
     }
 
-//    @GetMapping("/post")
-//    public ResponseEntity<?> mainStory(@AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size=3) Pageable pageable) {
-//        return new ResponseEntity<>(postService.getPost(principalDetails.getUser().getId(), pageable), HttpStatus.OK);
-//    }
-//
+    @GetMapping("/post")
+    public ResponseEntity<?> mainStory(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        List<Post> posts = postService.getPostsOfUser(principalDetails.getUser().getId());
+        List<PostInfoDto> postInfoDtos = new ArrayList<>();
+        for(Post post : posts)
+            postInfoDtos.add(postService.getPostInfoDto(post.getId(), principalDetails.getUser().getId()));
+
+        return new ResponseEntity<>(postInfoDtos, HttpStatus.OK);
+    }
+
 
     @GetMapping("/post/tag")
     public ResponseEntity<?> searchTag(@RequestParam String tag,

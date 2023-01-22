@@ -11,7 +11,6 @@ function storyLoad() {
             alert("검색 결과가 없습니다.");
             window.history.back();
         }
-        let cnt = 0;
         res.forEach((post) => {
             let postItem = getStoryItem(post);
             $("#feeds").append(postItem);
@@ -40,12 +39,12 @@ function getStoryItem(post) {
             </div>
             <div class="icons-react">
                 <div class="icons-left">`;
-    if(post.likeState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})"> ${post.likeCount}</i>`;
-    } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})"> ${post.likeCount}</i>`;
-    }
-    item += `
+            if(post.likeState) {
+                item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})"> ${post.likeCount}</i>`;
+            } else {
+                item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})"> ${post.likeCount}</i>`;
+            }
+            item += `
                 </div>
             </div>
             <div class="reaction">
@@ -53,26 +52,26 @@ function getStoryItem(post) {
 	                <span>${post.text}</span>
                 </div>
 	            <div class="tag post-text-area">`;
-    let arr = post.tag.split(',');
+                    let arr = post.tag.split(',');
 
-    for(let i = 0; i < arr.length; i++) {
-        item += `<span class="tag-span" onclick="location.href='/post/search?tag=${arr[i]}'">#${arr[i]} </span>`;
-    }
-    item += `
+                    for(let i = 0; i < arr.length; i++) {
+                        item += `<span class="tag-span" onclick="location.href='/post/search?tag=${arr[i]}'">#${arr[i]} </span>`;
+                    }
+                    item += `
                 </div>
                 <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${post.id}">`;
 
-    post.comments.forEach((comment)=>{
-        item += `<li id="storyCommentItem-${comment.id}">
+                post.comments.forEach((comment)=>{
+                    item += `<li id="storyCommentItem-${comment.id}">
                                 <span><span class="point-span userID">${comment.user.name}</span>${comment.content}</span>`;
-        if(principalId == comment.user.id) {
-            item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
+                                if(principalId == comment.user.id) {
+                                    item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
                                                 <i class="fas fa-times"></i>
                                             </button>`;
-        }
-        item += `</li>`});
-    item += `
+                                }
+                    item += `</li>`});
+                item += `
                 </ul>
                 </div>
             </div>

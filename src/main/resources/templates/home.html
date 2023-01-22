@@ -59,6 +59,10 @@
     </div>
     </div>
 </main>
-<script src="/js/story.js"></script>
+<script src="/js/story.js" th:inline="javascript">
+    /*[# sec:authorize="isAuthenticated()"]*/
+    let principalId = /*[[${#authentication.principal.user.id}]]*/
+    /*[/]*/
+</script>
 </body>
 </html>

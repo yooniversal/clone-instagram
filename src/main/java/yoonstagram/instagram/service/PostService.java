@@ -43,8 +43,6 @@ public class PostService {
             e.printStackTrace();
         }
 
-        log.info("descriptions: {}", uploadPostDto.getText());
-
         Post post = Post.createPost(imageFileName, uploadPostDto.getTag(), uploadPostDto.getText(), user);
         postRepository.save(post);
 
@@ -77,6 +75,10 @@ public class PostService {
         else postInfoDto.setUploader(false);
 
         return postInfoDto;
+    }
+
+    public List<Post> getPostsOfUser(Long userId) {
+        return postRepository.findByUserId(userId);
     }
 
     public List<Post> getAllPosts() {

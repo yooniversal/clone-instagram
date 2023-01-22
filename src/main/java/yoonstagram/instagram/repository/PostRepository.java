@@ -31,4 +31,10 @@ public class PostRepository {
                 .setParameter("tag", tag)
                 .getResultList();
     }
+
+    public List<Post> findByUserId(Long userId) {
+        return em.createQuery("select p from Post p join p.user u on u.id = :userId", Post.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
 }
