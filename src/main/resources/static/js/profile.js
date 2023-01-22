@@ -246,7 +246,7 @@ function toggleLike(postId) {
         }).fail(error=>{
             console.log("오류", error);
         });
-    } else { // 좋아요취소 하겠다
+    } else { // 좋아요 취소
         $.ajax({
             type: "delete",
             url: `/api/post/${postId}/likes`,

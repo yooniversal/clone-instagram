@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
 import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.dto.PostInfoDto;
+import yoonstagram.instagram.service.LikeService;
 import yoonstagram.instagram.service.PostService;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
 public class PostApiController {
 
     private final PostService postService;
+    private final LikeService likeService;
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<?> postInfo (
@@ -28,26 +30,26 @@ public class PostApiController {
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
         log.info("post id:{} user id:{}", postId, principalDetails.getUser().getId());
         return new ResponseEntity<>(postService.getPostInfoDto(postId, principalDetails.getUser().getId()), HttpStatus.OK);
-//        return new ResponseEntity<>(postService.getPostInfoDto(postId, 1L), HttpStatus.OK);
     }
 
-//    @PostMapping("/post/{postId}/likes")
-//    public ResponseEntity<?> likes(@PathVariable long postId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-//        likesService.likes(postId, principalDetails.getUser().getId());
-//        return new ResponseEntity<>("좋아요 성공", HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/post/{postId}/likes")
-//    public ResponseEntity<?> unLikes(@PathVariable long postId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-//        likesService.unLikes(postId, principalDetails.getUser().getId());
-//        return new ResponseEntity<>("좋아요 취소 성공", HttpStatus.OK);
-//    }
-//
+    @PostMapping("/post/{postId}/likes")
+    public ResponseEntity<?> likes(@PathVariable long postId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        likeService.likes(postId, principalDetails.getUser().getId());
+        return new ResponseEntity<>("좋아요 성공", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/post/{postId}/likes")
+    public ResponseEntity<?> unLikes(@PathVariable long postId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        likeService.unLikes(postId, principalDetails.getUser().getId());
+        return new ResponseEntity<>("좋아요 취소 성공", HttpStatus.OK);
+    }
+
 //    @GetMapping("/post")
 //    public ResponseEntity<?> mainStory(@AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size=3) Pageable pageable) {
 //        return new ResponseEntity<>(postService.getPost(principalDetails.getUser().getId(), pageable), HttpStatus.OK);
 //    }
 //
+
     @GetMapping("/post/tag")
     public ResponseEntity<?> searchTag(@RequestParam String tag,
                                        @AuthenticationPrincipal PrincipalDetails principalDetails) {

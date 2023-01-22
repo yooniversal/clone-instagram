@@ -26,7 +26,7 @@
           <span></span>
           <button class="cta" th:if="!${findUserDto.login} and !${findUserDto.follow}" th:onclick="|toggleSubscribe(${findUserDto.id}, this)|">팔로우</button>
           <button class="cta" th:if="!${findUserDto.login} and ${findUserDto.follow}" th:onclick="|toggleSubscribe(${findUserDto.id}, this)|">팔로잉</button>
-          <button class="modi" th:if="${findUserDto}" onclick="popup('.modal-info')">
+          <button class="modi" th:if="${findUserDto.login}" onclick="popup('.modal-info')">
             <i class="fas fa-cog"></i>
           </button>
         </div>

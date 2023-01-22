@@ -20,9 +20,6 @@ public class FollowRepository {
     }
 
     public void unfollow(User fromUser, User toUser) {
-        // 각 유저에서 팔로우 시 카운팅은 되는데 언팔 카운팅은 안됨!!
-        // 아마 여기서 로직이 없어서 그런거같음
-        // 팔로우 카운팅은 어떻게 되는건지도 알아보기
         em.createQuery("delete from Follow f where f.fromUser = :fromUser and f.toUser = :toUser")
                 .setParameter("fromUser", fromUser)
                 .setParameter("toUser", toUser)

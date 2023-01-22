@@ -11,12 +11,6 @@ import java.util.List;
 @Getter @Setter
 public class User {
 
-    public User() {
-        this.username = "";
-        this.description = "";
-        this.link = "";
-    }
-
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
@@ -35,6 +29,13 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
+
+    public User() {
+        this.username = "";
+        this.description = "";
+        this.link = "";
+    }
+
     public int getPostsCount() {
         return posts.size();
     }
