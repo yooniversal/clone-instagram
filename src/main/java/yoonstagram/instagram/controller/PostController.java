@@ -92,7 +92,7 @@ public class PostController {
         model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
 
-        SimpleUserDto currentUserDto = new SimpleUserDto(currentUser);
+        SimpleUserDto currentUserDto = new SimpleUserDto(currentUser, true);
         model.addAttribute("currentUserDto", currentUserDto);
         model.addAttribute("tag", tag);
 

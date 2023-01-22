@@ -56,15 +56,15 @@ function followingInfoModalOpen(profileId) {
 function getfollowModalItem(follow) {
     let item = `<div class="subscribe__item" id="subscribeModalItem-${follow.id}">
 	<div class="subscribe__img">
-		<a href="/user/profile?id=${follow.id}" ><img src="/profile_imgs/${follow.profileImgUrl}" onerror="this.src='/img/default_profile.jpg';" /></a>
+		<a href="/user/profile?id=${follow.id}" ><img src="/profile_imgs/${follow.imageUrl}" onerror="this.src='/img/default_profile.jpg';" /></a>
 	</div>
 	<div class="subscribe__text">
 		<h2>${follow.name}</h2>
 	</div>
 	<div class="subscribe__btn">`;
     if(!follow.loginUser){
-        if(follow.followState){
-            item += `<button class="cta-follow blue" onclick="toggleSubscribe(${follow.id}, this)">팔로잉</button>`;
+        if(follow.follow){
+            item += `<button class="cta-follow" onclick="toggleSubscribe(${follow.id}, this)">팔로잉</button>`;
         }else{
             item += `<button class="cta-follow" onclick="toggleSubscribe(${follow.id}, this)">팔로우</button>`;
         }

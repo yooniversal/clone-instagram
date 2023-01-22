@@ -31,19 +31,25 @@ public class FollowRepository {
         em.clear();
     }
 
+    public List<Follow> findAll() {
+        return em.createQuery("select f from Follow f", Follow.class)
+                .getResultList();
+    }
+
     public List<User> getFollowers(Long userId) {
         return em.createQuery("select f.fromUser from Follow f where f.toUser.id = :userId", User.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }
 
-    public List<Follow> findAll() {
-        return em.createQuery("select f from Follow f", Follow.class)
+    public List<User> getFollowings(Long userId) {
+        return em.createQuery("select f.toUser from Follow f where f.fromUser.id = :userId", User.class)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
-    public List<User> getFollowings(Long userId) {
-        return em.createQuery("select f.toUser from Follow f where f.fromUser.id = :userId", User.class)
+    public List<User> getFollows(Long userId) {
+        return em.createQuery("select f from Follow f where f.fromUser.id = :userId", User.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }

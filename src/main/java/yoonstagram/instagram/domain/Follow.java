@@ -16,12 +16,10 @@ public class Follow {
     @Column(name = "follow_id")
     private Long id;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "from_user_id")
     private User fromUser;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "to_user_id")
     private User toUser;
