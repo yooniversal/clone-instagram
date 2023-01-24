@@ -42,7 +42,6 @@ public class PostRepository {
         em.createQuery("delete from Post p where p.id = :postId")
                 .setParameter("postId", postId)
                 .executeUpdate();
-        em.flush();
         em.clear();
     }
 }

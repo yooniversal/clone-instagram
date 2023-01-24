@@ -560,6 +560,7 @@ span.post-time {
 .comment-section {
     overflow-y: auto;
     height: 100px;
+    margin-top: 10px;
 }
 .input-comment-post {
     font-size: 14px;

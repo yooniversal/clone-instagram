@@ -9,13 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import yoonstagram.instagram.config.auth.Oauth2DetailsService;
 
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
+    private final Oauth2DetailsService oauth2DetailsService;
 
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -24,7 +25,6 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        /* @formatter:off */
         http
                 .authorizeRequests()
                         .antMatchers("/signUp",
@@ -41,18 +41,22 @@ public class SecurityConfiguration {
                         .loginPage("/login") // 기본 로그인 페이지
                         .and()
                 .logout()
-                .permitAll()
-                // .logoutUrl("/logout") // 로그아웃 URL (기본 값 : /logout)
-                // .logoutSuccessUrl("/login?logout") // 로그아웃 성공 URL (기본 값 : "/login?logout")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 주소창에 요청해도 포스트로 인식하여 로그아웃
-                .deleteCookies("JSESSIONID") // 로그아웃 시 JSESSIONID 제거
-                .invalidateHttpSession(true) // 로그아웃 시 세션 종료
-                .clearAuthentication(true); // 로그아웃 시 권한 제거
+                        .permitAll()
+                        .logoutUrl("/logout") // 로그아웃 URL (기본 값 : /logout)
+                        .logoutSuccessUrl("/login")
+//                      .logoutSuccessUrl("/login?logout") // 로그아웃 성공 URL (기본 값 : "/login?logout")
+//                      .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 주소창에 요청해도 포스트로 인식하여 로그아웃
+//                      .deleteCookies("JSESSIONID") // 로그아웃 시 JSESSIONID 제거
+                        .invalidateHttpSession(true) // 로그아웃 시 세션 종료
+//                      .clearAuthentication(true); // 로그아웃 시 권한 제거
+                        .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(oauth2DetailsService);
 
         http.csrf().disable();
-
         return http.build();
-        /* @formatter:on */
     }
 
     @Autowired

@@ -26,6 +26,11 @@ span.sub-span {
     font-size: 12px;
     color: #8e8e8e;
 }
+span.sub-span-follow {
+    font-size: 12px;
+    text-align: left;
+    color: #8e8e8e;
+}
 span.point-span {
     font-weight: 600;
     font-size: 16px;
@@ -361,6 +366,11 @@ ul.story-list .profile-text {
 }
 .profile-text span.userID {
     margin-bottom: 2px;
+}
+.profile-text span.userID-follow {
+    margin-bottom: 2px;
+    width: 400px;
+    text-align: left;
 }
 .recommend-list li {
     display: flex;

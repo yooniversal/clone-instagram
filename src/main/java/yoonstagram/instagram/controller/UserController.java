@@ -18,6 +18,9 @@ import yoonstagram.instagram.service.FollowService;
 import yoonstagram.instagram.service.PostService;
 import yoonstagram.instagram.service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -73,9 +76,32 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("user/follow")
+    public String userFollow(Model model,
+                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        User currentUser = principalDetails.getUser();
+        List<User> currentUserFollowings = followService.getFollowings(currentUser.getId());
+        List<User> users = userService.findUsers();
+        List<UserProfileDto> userDtos = new ArrayList<>();
+        for(User user : users) {
+            if(user.getId().equals(currentUser.getId())) continue;
+
+            boolean follow = currentUserFollowings.contains(user);
+            int followerCount = followService.getFollowers(user.getId()).size();
+            int followingCount = followService.getFollowings(user.getId()).size();
+            userDtos.add(new UserProfileDto(user, follow, followerCount, followingCount));
+        }
+
+        model.addAttribute("users", userDtos);
+        model.addAttribute("currentUserId", currentUser.getId());
+        model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
+        return "user/follow";
+    }
+
     @GetMapping("/common")
     public String common(Model model,
-                                 @AuthenticationPrincipal PrincipalDetails principalDetails) {
+                         @AuthenticationPrincipal PrincipalDetails principalDetails) {
         User currentUser = principalDetails.getUser();
         model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());

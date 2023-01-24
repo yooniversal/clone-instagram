@@ -32,7 +32,6 @@ public class CommentRepository {
         em.createQuery("delete from Comment c where c.id = :commentId")
                 .setParameter("commentId", commentId)
                 .executeUpdate();
-        em.flush();
         em.clear();
     }
 
