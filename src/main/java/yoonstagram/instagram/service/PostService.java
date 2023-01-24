@@ -6,18 +6,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import yoonstagram.instagram.domain.Comment;
 import yoonstagram.instagram.domain.Like;
 import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.User;
-import yoonstagram.instagram.domain.dto.PostInfoDto;
-import yoonstagram.instagram.domain.dto.PostUploaderDto;
-import yoonstagram.instagram.domain.dto.UploadPostDto;
+import yoonstagram.instagram.domain.dto.*;
+import yoonstagram.instagram.repository.CommentRepository;
 import yoonstagram.instagram.repository.PostRepository;
 import yoonstagram.instagram.repository.UserRepository;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -27,6 +28,7 @@ public class PostService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Value("${post.path}")
     private String uploadPostFolder;
@@ -59,7 +61,6 @@ public class PostService {
         postInfoDto.setText(post.getDescription());
         postInfoDto.setPostImgUrl(post.getImageUrl());
         postInfoDto.setDate(post.getDate());
-        postInfoDto.setComments(post.getComment());
 
         // 현재 user의 해당 post에 대한 정보
         postInfoDto.setLikeCount(post.getLikes().size());
@@ -74,7 +75,27 @@ public class PostService {
         if(userId.equals(post.getUser().getId())) postInfoDto.setUploader(true);
         else postInfoDto.setUploader(false);
 
+        // 해당 post의 comments 설정
+        List<Comment> comments = commentRepository.getCommentsOfPost(postId);
+        List<CommentDto> commentDtos = new ArrayList<>();
+        for(Comment comment : comments) {
+            CommentDto commentDto = new CommentDto();
+            User commentUser = userRepository.findOneById(comment.getUserId());
+            commentDto.setId(comment.getId());
+            commentDto.setUserId(commentUser.getId());
+            commentDto.setPostId(postId);
+            commentDto.setName(commentUser.getName());
+            commentDto.setText(comment.getContent());
+            commentDto.setImageUrl(commentUser.getImageUrl());
+            commentDtos.add(commentDto);
+        }
+        postInfoDto.setComments(commentDtos);
+
         return postInfoDto;
+    }
+
+    public Post findOneById(Long id) {
+        return postRepository.findOneById(id);
     }
 
     public List<Post> getPostsOfUser(Long userId) {
@@ -87,5 +108,17 @@ public class PostService {
 
     public List<Post> getPostsWithTag(String tag) {
         return postRepository.findWithTag(tag);
+    }
+
+    @Transactional
+    public void update(PostUpdateDto postUpdateDto) {
+        Post post = postRepository.findOneById(postUpdateDto.getId());
+        post.setTag(postUpdateDto.getTag());
+        post.setDescription(postUpdateDto.getText());
+    }
+
+    @Transactional
+    public void delete(Long postId) {
+        postRepository.delete(postId);
     }
 }

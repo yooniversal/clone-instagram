@@ -486,10 +486,11 @@ span.post-time {
     display: none;
     align-items: center;
     justify-content: center;
+    z-index: 105;
 }
 .modal-post .subscribe {
     width: 400px;
-    height: 800px;
+    /*height: 800px;*/
     background-color: #fff;
     border-radius: 10px;
     display: flex;
@@ -513,6 +514,7 @@ span.post-time {
     position: absolute;
     top: 15px;
     background-color: transparent;
+    margin-left: 10px;
     border: 0;
 }
 .edit {
@@ -554,6 +556,10 @@ span.post-time {
 .comment-info {
     overflow: hidden;
     overflow-y: auto;
+}
+.comment-section {
+    overflow-y: auto;
+    height: 100px;
 }
 .input-comment-post {
     font-size: 14px;
@@ -674,8 +680,8 @@ button.submit-comment:focus {
 
 .post-div {
     margin: 10px;
-    overflow-y: auto;
-    height: 290px;
+    /*overflow-y: auto;*/
+    /*height: 290px;*/
 }
 
 .post-img-profile {
@@ -701,4 +707,12 @@ button.submit-comment:focus {
     z-index:9000;
     background-color:#000;
     display:none;
+}
+img.comment-pic {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #fafafa;
+    border-radius: 100%;
+    object-fit: cover;
+    margin-right: 10px;
 }

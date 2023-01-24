@@ -20,7 +20,7 @@ footer p {
 }
 
 span.userID {
-    margin-right: 15px;
+    margin-right: 10px;
 }
 span.sub-span {
     font-size: 12px;
@@ -30,6 +30,10 @@ span.point-span {
     font-weight: 600;
     font-size: 16px;
     color: #262626;
+}
+.comment-span {
+    margin-top: 5px;
+    margin-right: 10px;
 }
 /* nav */
 nav {
@@ -236,9 +240,9 @@ ul.comments {
     margin-top: 10px;
 }
 ul.comments li {
-    height: 21px;
+    height: 32px;
     display: flex;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     color: #262626;
     font-size: 14px;
 }
@@ -379,6 +383,8 @@ ul.story-list .profile-text {
     outline: none;
     background: #fff;
     cursor: pointer;
+    margin-left: 5px;
+    margin-bottom: 10px;
 }
 
 .tag-span {
@@ -393,5 +399,12 @@ ul.story-list .profile-text {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
+.comment-pic {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #fafafa;
+    border-radius: 100%;
+    object-fit: cover;
+    margin-right: 10px;
+}
 

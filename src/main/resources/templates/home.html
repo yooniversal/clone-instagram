@@ -61,7 +61,7 @@
 </main>
 <script src="/js/story.js" th:inline="javascript">
     /*[# sec:authorize="isAuthenticated()"]*/
-    let principalId = /*[[${#authentication.principal.user.id}]]*/
+    let principalId = /*[[${#authentication.principal.user.id}]]*/;
     /*[/]*/
 </script>
 </body>

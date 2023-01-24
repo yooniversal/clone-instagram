@@ -115,13 +115,14 @@ function postPopup(postId, obj) {
         $("#postInfoModal").append(item);
 
         let modal = document.getElementById(obj.toLocaleString().substring(1));
-        console.log(obj.toLocaleString().substring(1))
 
         modal.addEventListener("click", function(e){
             if (!$("#postInfoModal").is(e.target) && $("#postInfoModal").has(e.target).length === 0) {
                 modal.style.display = "none";
+
+                // 팝업된 내용 삭제
+                $("#postInfoModal").empty();
             }
-            //
         });
 
     }).fail(error => {
@@ -162,7 +163,7 @@ function getPostModalInfo(postInfoDto) {
 
         return timeAgo;
     }
-
+    let principalId = $("#principalId").val();
     let item = `
     <div class="subscribe-header">
             <a href="/user/profile?id=${postInfoDto.postUploader.id}"><img class="post-img-profile pic" src="/profile_imgs/${postInfoDto.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>  
@@ -176,7 +177,7 @@ function getPostModalInfo(postInfoDto) {
     </div>
     <div class="post-box">
 	    <div class="subscribe__img">
-		    <img src="/upload/${postInfoDto.postImgUrl}" />
+		    <img src="/upload/${postInfoDto.postImgUrl}" style="border-bottom: 1px solid #ddd;" />
 	    </div>
 	    <div class="post-div">
 	    <div class="post-info">
@@ -200,16 +201,20 @@ function getPostModalInfo(postInfoDto) {
                     item += `
             </div>
         </div>
-        <div class="subscribe__img">
+        <div class="subscribe__img post-text-area">
             <span class="post-time">${diffentTime()}</span>
         </div>
-        <hr>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
                     postInfoDto.comments.forEach((comment)=>{
                     item += `<li id="storyCommentItem-${comment.id}">
-                               <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
-                                if(principalId == comment.user.id) {
+                                <a href="/user/profile?id=${comment.userId}">
+                                   <img class="comment-pic" src="/profile_imgs/${comment.imageUrl}" onerror="src='/img/default_profile.jpg'">
+                                </a>
+                                <span>
+                                   <span class="comment-span point-span">${comment.name}</span>${comment.text}
+                                </span>`;
+                                if(principalId == comment.userId) {
                                     item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
                                                 <i class="fas fa-times"></i>
                                             </button>`;
@@ -291,9 +296,14 @@ function addComment(postId) {
         let comment = res;
         let content = `
 		    <li id="storyCommentItem-${comment.id}">
-                 <span><span class="point-span userID">${comment.user.name}</span>${comment.content}</span>
-                 <button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
-                    <i class="fas fa-times"></i>
+                 <a href="/user/profile?id=${comment.userId}">
+                    <img class="comment-pic" src="/profile_imgs/${comment.imageUrl}" onerror="src='/img/default_profile.jpg'">
+                 </a>
+                 <span>
+                    <span class="comment-span point-span">${comment.name}</span>${comment.text}
+                 </span>`;
+     content += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
+                        <i class="fas fa-times"></i>
                  </button>
             </li>`;
         commentList.append(content);

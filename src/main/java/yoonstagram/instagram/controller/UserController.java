@@ -73,4 +73,13 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/common")
+    public String common(Model model,
+                                 @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User currentUser = principalDetails.getUser();
+        model.addAttribute("currentUserId", currentUser.getId());
+        model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
+        return "layout/common";
+    }
+
 }

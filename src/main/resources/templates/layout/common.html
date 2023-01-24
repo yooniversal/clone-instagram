@@ -27,7 +27,7 @@
 </head>
 
 <nav th:fragment="menu(menu)">
-    <input type="hidden" id="principalId" value="${currentUserId})}"/>
+    <input type="hidden" id="principalId" th:value="${currentUserId}"/>
     <div class="nav-container">
         <div class="nav-1">
             <a href="/">

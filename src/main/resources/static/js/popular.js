@@ -16,8 +16,8 @@ storyLoad();
 
 function getLikesItem(post) {
     let item = `
-        <div class="img-box" onclick="postPopup(${post.id}, '.modal-post')" >                   
-            <img src="/upload/${post.imageUrl}" onerror="this.src='/img/default_profile.jpg';" />
+        <div class="img-box" onclick="postPopup(${post.postId}, '.modal-post')" >                   
+            <img src="/upload/${post.postImageUrl}" onerror="this.src='/img/default_profile.jpg';" />
                 <div class="comment">
                     <a> <i class="fas fa-heart"></i><span>${post.likeCount}</span></a>
                 </div>
@@ -29,7 +29,6 @@ function getLikesItem(post) {
 
 //포스트
 function postPopup(postId, obj) {
-    console.log(obj);
     $(obj).css("display", "flex");
 
     $.ajax({
@@ -49,6 +48,39 @@ function modalClose() {
 }
 
 function getPostModalInfo(postInfoDto) {
+    let diffentTime = function () {
+        const currentTime = new Date();
+        const postTimeStamp = new Date(postInfoDto.date);
+        const postTimeInMillis = postTimeStamp.getTime();
+        const postTime = new Date(postTimeInMillis);
+
+        const timeDiff = currentTime - postTime;
+        const msDiff = timeDiff;
+        const secDiff = msDiff / 1000;
+        const minDiff = secDiff / 60;
+        const hourDiff = minDiff / 60;
+        const dayDiff = hourDiff / 24;
+        const monthDiff = dayDiff / 30;
+        const yearDiff = monthDiff / 12;
+
+        let timeAgo = "";
+        if (yearDiff >= 1) {
+            timeAgo = Math.floor(yearDiff) + "년 전";
+        } else if (monthDiff >= 1) {
+            timeAgo = Math.floor(monthDiff) + "개월 전";
+        } else if (dayDiff >= 1) {
+            timeAgo = Math.floor(dayDiff) + "일 전";
+        } else if (hourDiff >= 1) {
+            timeAgo = Math.floor(hourDiff) + "시간 전";
+        } else if (minDiff >= 1) {
+            timeAgo = Math.floor(minDiff) + "분 전";
+        } else {
+            timeAgo = "지금";
+        }
+
+        return timeAgo;
+    }
+    let principalId = $("#principalId").val();
     let item = `
     <div class="subscribe-header">
             <a href="/user/profile?id=${postInfoDto.postUploader.id}"><img class="post-img-profile pic" src="/profile_imgs/${postInfoDto.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>  
@@ -64,40 +96,47 @@ function getPostModalInfo(postInfoDto) {
 		    <img src="/upload/${postInfoDto.postImgUrl}" />
 	    </div>
 	    <div class="post-div">
-	    <div class="post-info">
-	        <div class="text"> `;
-    if(postInfoDto.likeState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
-    } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
-    }
-    item += `
-            </div>
-	        <div class="text">
-	            <span>${postInfoDto.text}</span>
-            </div>
-	        <div class="tag">`;
-    let arr = postInfoDto.tag.split(',');
+	    <div>
+            <div class="post-info">
+                    <div class="text post-text-area"> `;
+            if(postInfoDto.likeState) {
+                item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
+            } else {
+                item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
+            }
+            item += `
+                    </div>
+                    <div class="text post-text-area">
+                        <span>${postInfoDto.text}</span>
+                    </div>
+                    <div class="tag post-text-area">`;
+            let arr = postInfoDto.tag.split(',');
 
-    for(let i = 0; i < arr.length; i++) {
-        item += `<span class="tag-span" onclick="location.href='/post/search?tag=${arr[i]}'">#${arr[i]} </span>`;
-    }
-    item += `
-            </div>
-        </div>
-        <div class="subscribe__img">
-            <span>${postInfoDto.date.toLocaleString()}</span>
+            for(let i = 0; i < arr.length; i++) {
+                item += `<span class="tag-span" onclick="location.href='/post/search?tag=${arr[i]}'">#${arr[i]} </span>`;
+            }
+            item += `
+                    </div>
+                </div>
+                <div class="subscribe__img post-text-area">
+                    <span class="post-time">${diffentTime()}</span>
+                </div>
         </div>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
     postInfoDto.comments.forEach((comment)=>{
         item += `<li id="storyCommentItem-${comment.id}">
-                               <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
-        if(principalId == comment.user.id) {
-            item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
-                                                <i class="fas fa-times"></i>
-                                            </button>`;
-        }
+                    <a href="/user/profile?id=${comment.userId}">
+                       <img class="comment-pic" src="/profile_imgs/${comment.imageUrl}" onerror="src='/img/default_profile.jpg'">
+                    </a>
+                    <span>
+                       <span class="comment-span point-span">${comment.name}</span>${comment.text}
+                    </span>`;
+                    if(principalId == comment.userId) {
+                        item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>`;
+                    }
         item += `</li>`});
     item += `
                 </ul>
@@ -176,10 +215,15 @@ function addComment(postId) {
         let comment = res;
         let content = `
 		    <li id="storyCommentItem-${comment.id}">
-                 <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>
-                 <button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
-                    <i class="fas fa-times"></i>
-                 </button>
+                 <a href="/user/profile?id=${comment.userId}">
+                    <img class="comment-pic" src="/profile_imgs/${comment.imageUrl}" onerror="src='/img/default_profile.jpg'">
+                 </a>
+                 <span>
+                    <span class="comment-span point-span">${comment.name}</span>${comment.text}
+                 </span>`;
+    content += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
+                            <i class="fas fa-times"></i>
+                </button>
             </li>`;
         commentList.append(content);
     }).fail(error=>{

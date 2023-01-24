@@ -37,4 +37,12 @@ public class PostRepository {
                 .setParameter("userId", userId)
                 .getResultList();
     }
+
+    public void delete(Long postId) {
+        em.createQuery("delete from Post p where p.id = :postId")
+                .setParameter("postId", postId)
+                .executeUpdate();
+        em.flush();
+        em.clear();
+    }
 }

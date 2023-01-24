@@ -4,21 +4,19 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class Comment {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
     @JsonIgnore
     @ManyToOne
@@ -26,4 +24,10 @@ public class Comment {
     private Post post;
 
     private String content;
+
+    public Comment(User user, Post post, String content) {
+        this.userId = user.getId();
+        this.post = post;
+        this.content = content;
+    }
 }

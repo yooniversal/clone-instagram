@@ -49,6 +49,6 @@ public class Post implements Comparable<Post> {
 
     @Override
     public int compareTo(Post o) {
-        return getLikeCount() - o.getLikeCount();
+        return o.getLikeCount() - getLikeCount();
     }
 }

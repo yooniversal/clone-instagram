@@ -17,12 +17,12 @@
         <!--게시물컨 그리드 배열-->
         <div class="tab-1-content-inner" id ="img-box">
           <!--아이템들-->
-          <div class="img-box" th:each="like : ${likes}" th:onclick="|postPopup(${like.post.id}, '.modal-post')|">
-            <img th:src="@{${'/upload/' + like.post.imageUrl}}" />
-            <div class="comment">
-              <a> <i class="fas fa-heart"></i><span th:text="${like.post.likeCount}"></span></a>
-            </div>
-          </div>
+<!--          <div class="img-box" th:each="like : ${likes}" th:onclick="|postPopup(${like.post.id}, '.modal-post')|">-->
+<!--            <img th:src="@{${'/upload/' + like.post.imageUrl}}" />-->
+<!--            <div class="comment">-->
+<!--              <a> <i class="fas fa-heart"></i><span th:text="${like.post.likeCount}"></span></a>-->
+<!--            </div>-->
+<!--          </div>-->
           <!--아이템들 end-->
         </div>
       </div>

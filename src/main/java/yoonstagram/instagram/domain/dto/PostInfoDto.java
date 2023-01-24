@@ -11,7 +11,7 @@ import java.util.List;
 @Getter @Setter
 public class PostInfoDto {
 
-    private long id;
+    private Long id;
     private String text;
     private String tag;
     private LocalDateTime date;
@@ -20,5 +20,5 @@ public class PostInfoDto {
     private boolean likeState;
     private boolean uploader;
     private String postImgUrl;
-    private List<Comment> comments;
+    private List<CommentDto> comments;
 }

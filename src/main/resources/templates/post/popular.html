@@ -17,12 +17,12 @@
         <!--게시물 그리드 배열-->
         <div class="tab-1-content-inner" id ="popular-box">
           <!--아이템들-->
-          <div class="img-box" th:each="post : ${posts}" th:onclick="|postPopup(${post.id}, '.modal-post')|">
-            <img th:src="@{${'/upload/' + post.imageUrl}}" />
-            <div class="comment">
-              <a> <i class="fas fa-heart"></i><span th:text="${post.likeCount}"></span></a>
-            </div>
-          </div>
+<!--          <div class="img-box" th:each="post : ${posts}" th:onclick="|postPopup(${post.id}, '.modal-post')|">-->
+<!--            <img th:src="@{${'/upload/' + post.imageUrl}}" />-->
+<!--            <div class="comment">-->
+<!--              <a> <i class="fas fa-heart"></i><span th:text="${post.likeCount}"></span></a>-->
+<!--            </div>-->
+<!--          </div>-->
           <!--아이템들 end-->
         </div>
       </div>
@@ -39,7 +39,9 @@
 <footer th:replace="layout/common :: footer('footer')"></footer>
 </body>
 <script th:inline="javascript">
-
+  /*[# sec:authorize="isAuthenticated()"]*/
+  let principalId = /*[[${#authentication.principal.user.id}]]*/;
+  /*[/]*/
 </script>
 <script src="/js/popular.js"></script>
 </html>

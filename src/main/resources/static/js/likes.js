@@ -2,13 +2,13 @@ let page = 0;
 
 function storyLoad() {
     $.ajax({
-        url: `/api/post/likes?page=${page}`,
+        url: `/api/post/likes`,
         dataType: "json"
     }).done(res => {
         if(res.totalElements == 0) {
 
         }
-        res.content.forEach((post) => {
+        res.forEach((post) => {
             let postItem = getLikesItem(post);
             $("#img-box").append(postItem);
         });
@@ -31,10 +31,10 @@ $(window).scroll(() => {
 
 function getLikesItem(post) {
     let item = `
-        <div class="img-box" onclick="postPopup(${post.id}, '.modal-post')" >                   
-            <img src="/upload/${post.postImgUrl}" onerror="this.src='/img/default_profile.jpg';" />
+        <div class="img-box" onclick="postPopup(${post.postId}, '.modal-post')" >                   
+            <img src="/upload/${post.postImageUrl}" onerror="this.src='/img/default_profile.jpg';" />
                 <div class="comment">
-                    <a> <i class="fas fa-heart"></i><span>${post.likesCount}</span></a>
+                    <a> <i class="fas fa-heart"></i><span>${post.likeCount}</span></a>
                 </div>
         </div>
     `;

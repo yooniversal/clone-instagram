@@ -18,6 +18,7 @@ function storyLoad() {
 storyLoad();
 
 function getStoryItem(post) {
+    let principalId = $("#principalId").val();
     let item = `
         <article>
             <header>
@@ -59,8 +60,13 @@ function getStoryItem(post) {
 
                 post.comments.forEach((comment)=>{
                     item += `<li id="storyCommentItem-${comment.id}">
-                                <span><span class="point-span userID">${comment.user.name}</span>${comment.content}</span>`;
-                                if(principalId == comment.user.id) {
+                                <a href="/user/profile?id=${comment.userId}">
+                                   <img class="comment-pic" src="/profile_imgs/${comment.imageUrl}" onerror="src='/img/default_profile.jpg'">
+                                </a>
+                                <span>
+                                   <span class="comment-span point-span">${comment.name}</span>${comment.text}
+                                </span>`;
+                                if(principalId == comment.userId) {
                                     item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
                                                 <i class="fas fa-times"></i>
                                             </button>`;
@@ -186,7 +192,12 @@ function addComment(postId) {
         let comment = res;
         let content = `
 		    <li id="storyCommentItem-${comment.id}">
-                 <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>
+		         <a href="/user/profile?id=${comment.userId}">
+                        <img class="comment-pic" src="/profile_imgs/${comment.imageUrl}" onerror="src='/img/default_profile.jpg'">
+                 </a>
+                 <span>
+                    <span class="comment-span point-span">${comment.name}</span>${comment.text}
+                 </span>
                  <button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
                     <i class="fas fa-times"></i>
                  </button>
@@ -218,7 +229,6 @@ function toggleSubscribe(toUserId, obj) {
             type: "delete",
             url: "/api/follow/" + toUserId,
         }).done(res => {
-            console.log("pass here");
             $(obj).text("팔로우");
             // $(obj).toggleClass("blue");
         }).fail(error => {
