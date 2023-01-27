@@ -2,20 +2,19 @@ package yoonstagram.instagram.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
+import yoonstagram.instagram.domain.Like;
+import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.User;
+import yoonstagram.instagram.domain.dto.PostInfoDto;
 import yoonstagram.instagram.domain.dto.UserProfileDto;
 import yoonstagram.instagram.service.FollowService;
-import yoonstagram.instagram.service.PostService;
+import yoonstagram.instagram.service.LikeService;
 import yoonstagram.instagram.service.UserService;
 
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ public class UserController {
 
     private final UserService userService;
     private final FollowService followService;
+    private final LikeService likeService;
 
     @GetMapping("/user/profile")
     public String userProfile(@RequestParam Long id,
@@ -44,6 +44,21 @@ public class UserController {
         model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
         findUserDto.setLogin(currentUser.getId().equals(findUser.getId()));
+
+        // 좋아요 게시물 처리
+        List<Like> likes = likeService.findLikesWithUser(currentUser.getId());
+        List<PostInfoDto> postDtos = new ArrayList<>();
+        for(Like like : likes) {
+            Post post = like.getPost();
+            PostInfoDto postDto = new PostInfoDto();
+            postDto.setId(post.getId());
+            postDto.setText(post.getDescription());
+            postDto.setTag(post.getTag());
+            postDto.setPostImgUrl(post.getImageUrl());
+            postDto.setLikeCount(post.getLikeCount());
+            postDtos.add(postDto);
+        }
+        model.addAttribute("likePostDtos", postDtos);
 
         return "user/profile";
     }

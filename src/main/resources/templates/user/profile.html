@@ -5,7 +5,6 @@
 <head th:replace="layout/common :: menu('menu')"></head>
 <!--프로필 섹션-->
 <main class="profile_main">
-  <div style="display: none;" id="currentUser" data-user-id="[[${#authentication.principal.user.id}]]" data-user-name="[[${#authentication.principal.user.name}]]" data-user-image="[[${#authentication.principal.user.imageUrl}]]"></div>
   <section class="profile" id="profile-section">
     <!--유저정보 컨테이너-->
     <div class="profileContainer">
@@ -23,7 +22,7 @@
       <div class="profile-right">
         <div class="name-group" >
           <h2 style="font-size: 1.2em; margin-top: 25px; margin-bottom: 20px" th:text="${findUserDto.name}"></h2>
-          <button class="cta" th:if="${findUserDto.login}" onclick="location.href='/user/update'">프로필 편집</button>
+          <button class="cta" id="edit-button" th:if="${findUserDto.login}" onclick="location.href='/user/update'">프로필 편집</button>
           <span></span>
           <button class="cta" th:if="!${findUserDto.login} and !${findUserDto.follow}" th:onclick="|toggleSubscribe(${findUserDto.id}, this)|">팔로우</button>
           <button class="cta" th:if="!${findUserDto.login} and ${findUserDto.follow}" th:onclick="|toggleSubscribe(${findUserDto.id}, this)|">팔로잉</button>
@@ -42,23 +41,50 @@
         <div class="state">
           <h4 th:text="${findUserDto.username}"></h4>
           <div class="description-class" th:text="${findUserDto.description}">DESCRIPTION TEXT</div>
-          <h5 style="color: #0074cc;" th:text="${findUserDto.link}"></h5>
+          <a class="profile-link" th:href="${findUserDto.link}" th:text="${findUserDto.link}"></a>
         </div>
       </div>
       <!--유저정보 및 사진등록 구독하기 end-->
     </div>
   </section>
+  <div class="profile-post-btn">
+    <div class="post-btn" th:onclick="|postModeToList()|">
+      <img src="/img/grid.png" id="grid-img" alt="그리드"/>
+      <span class="post-btn-text" id="post-text-list">게시물</span>
+    </div>
+    <div class="post-like-btn" th:onclick="|postModeToLike()|">
+      <img src="/img/heart-gray.png" id="heart-img" alt="하트"/>
+      <span class="post-btn-text" id="post-text-like">좋아요</span>
+    </div>
+  </div>
   <!--게시물 섹션-->
   <section id="tab-content">
     <!--게시물 컨테이너-->
-    <div class="profileContainer">
+    <div class="profileContainer" id="profile-container-post">
       <!--그냥 감싸는 div (지우면 이미지 커짐)-->
       <div id="tab-1-content" class="tab-content-item show">
         <!--게시물컨 그리드 배열-->
-        <div class="tab-1-content-inner" id="img-box" >
+        <div class="tab-1-content-inner">
           <!--아이템들-->
           <div class="img-box" th:each="post : ${findUserDto.posts}" th:onclick="|postPopup(${post.id}, '.modal-post')|">
             <img th:src="@{${'/upload/' + post.imageUrl}}" />
+            <div class="comment">
+              <a> <i class="fas fa-heart"></i><span th:text="${post.likeCount}"></span></a>
+            </div>
+          </div>
+          <!--아이템들 end-->
+        </div>
+      </div>
+    </div>
+    <!--좋아요 게시물 컨테이너-->
+    <div class="profileContainer" id="profile-container-like">
+      <!--그냥 감싸는 div (지우면 이미지 커짐)-->
+      <div id="tab-2-content" class="tab-content-item show">
+        <!--게시물컨 그리드 배열-->
+        <div class="tab-1-content-inner">
+          <!--아이템들-->
+          <div class="img-box" th:each="post : ${likePostDtos}" th:onclick="|postPopup(${post.id}, '.modal-post')|">
+            <img th:src="@{${'/upload/' + post.postImgUrl}}" />
             <div class="comment">
               <a> <i class="fas fa-heart"></i><span th:text="${post.likeCount}"></span></a>
             </div>

@@ -27,8 +27,8 @@
                 </span>
               </div>
             </div>
-            <button class="cta" th:if="!${user.login} and !${user.follow}" th:onclick="|toggleSubscribe(${user.id}, this)|">팔로우</button>
-            <button class="cta" th:if="!${user.login} and ${user.follow}" th:onclick="|toggleSubscribe(${user.id}, this)|">팔로잉</button>
+            <button class="cta recommend-follow" th:if="!${user.login} and !${user.follow}" th:onclick="|toggleSubscribe(${user.id}, this)|">팔로우</button>
+            <button class="cta recommend-follow" th:if="!${user.login} and ${user.follow}" th:onclick="|toggleSubscribe(${user.id}, this)|">팔로잉</button>
           </li>
         </tr>
       </ul>

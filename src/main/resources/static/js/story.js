@@ -21,7 +21,7 @@ function getStoryItem(post) {
     let principalId = $("#principalId").val();
     let item = `
         <article>
-            <header style="border-bottom: 1px solid #ddd;">
+            <header>
                 <div class="profile-of-article">
                     <a href="/user/profile?id=${post.postUploader.id}"><img class="img-profile pic" src="/profile_imgs/${post.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>
                     <span class="userID main-id point-span" >${post.postUploader.name}</span>

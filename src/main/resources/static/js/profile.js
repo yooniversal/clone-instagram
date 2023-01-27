@@ -485,3 +485,29 @@ function wrapWindowByMask(){
     // $('#mask').fadeIn(1000);
     // $('#mask').fadeTo("slow",0.8);
 }
+
+function postModeToLike() {
+    document.getElementById("profile-container-post").style.display = "none";
+    document.getElementById("profile-container-like").style.display = "flex";
+
+    document.querySelector(".post-btn").style.borderTop = "none"
+    document.getElementById("post-text-list").style.color = "#8a8989";
+    document.getElementById("grid-img").src = "/img/grid-gray.png";
+
+    document.querySelector(".post-like-btn").style.borderTop = "1px solid #2a2a2a"
+    document.getElementById("post-text-like").style.color = "black";
+    document.getElementById("heart-img").src = "/img/heart.png";
+}
+
+function postModeToList() {
+    document.getElementById("profile-container-like").style.display = "none";
+    document.getElementById("profile-container-post").style.display = "flex";
+
+    document.querySelector(".post-like-btn").style.borderTop = "none"
+    document.getElementById("post-text-like").style.color = "#8a8989";
+    document.getElementById("heart-img").src = "/img/heart-gray.png";
+
+    document.querySelector(".post-btn").style.borderTop = "1px solid #2a2a2a"
+    document.getElementById("post-text-list").style.color = "black";
+    document.getElementById("grid-img").src = "/img/grid.png";
+}

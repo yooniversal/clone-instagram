@@ -75,11 +75,13 @@
 .profile .profile-right .name-group .cta {
     margin-right: 0px;
     /*padding: 5px 9px;*/
-    border: 1px solid rgba(123,123,123,0.42);;
     border-radius: 4px;
     color: #262626;
     font-weight: bold;
-    background: transparent;
+    font-size: 14px;
+    border: 0;
+    width: 105px;
+    background: #eee;
 }
 .profile .profile-right .name-group .modi {
     border: none;
@@ -226,6 +228,49 @@
     color: #fff;
 }
 #tab-content #tab-1-content .tab-1-content-inner .img-box .comment a i {
+    margin-right: 10px;
+}
+
+/* Tab-content 2*/
+#tab-content #tab-2-content {
+    width: 100%;
+    margin-bottom: 30px;
+}
+#tab-content #tab-2-content .tab-1-content-inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 15px;
+}
+#tab-content #tab-2-content .tab-1-content-inner .img-box {
+    position: relative;
+    height: 293px;
+}
+#tab-content #tab-2-content .tab-1-content-inner .img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+#tab-content #tab-2-content .tab-1-content-inner .img-box .comment {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+}
+#tab-content #tab-2-content .tab-1-content-inner .img-box:hover .comment {
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 1;
+}
+#tab-content #tab-2-content .tab-1-content-inner .img-box .comment a,#tab-content #tab-1-content .tab-1-content-inner .img-box .comment a span{
+    color: #fff;
+}
+#tab-content #tab-2-content .tab-1-content-inner .img-box .comment a i {
     margin-right: 10px;
 }
 
@@ -594,8 +639,9 @@ button.submit-comment {
 button.submit-comment:focus {
     outline: none;
 }
-
-
+#edit-button:hover {
+    background: #CCCCCC;
+}
 .cta {
     margin-right: 10px;
     margin-top: 22px;
@@ -699,6 +745,14 @@ button.submit-comment:focus {
 .description-class {
     margin-top: 5px;
     font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.profile-link {
+    font-size: 0.83em;
+    text-decoration: none;
+    font-weight: bold;
+    color: #0074cc;
 }
 
 #mask {
@@ -794,7 +848,7 @@ img.comment-pic {
     text-align: center;
 }
 .modify-header, span {
-    font-size: 16px;
+    font-size: 14px;
 }
 .upload-main-block {
     width: 535px;
@@ -866,4 +920,72 @@ img.comment-pic {
     position: absolute;
     display: inline;
     right: 10px;
+}
+.recommend-follow {
+    width: 70px;
+    font-size: 14px;
+    background: #0095f6;
+    border: 0;
+    color: white;
+    border-radius: 8px;
+}
+.recommend-follow:hover {
+    background: #0478d0;
+}
+.home-recommend-follow {
+    border: 0;
+    color: #0095f6;
+    font-size: 13px;
+    margin-top: 16px;
+}
+.home-recommend-follow:hover {
+    color: #0478d0;
+}
+.profile-post-btn {
+    text-align: center;
+    border-top: 1px solid #ddd;
+    height: 52px;
+}
+.post-btn {
+    display: inline-block;
+    width: 57px;
+    height: 52px;
+    border-top: 1px solid #2a2a2a;
+    margin-right: 30px;
+}
+.post-btn:hover {
+    cursor: pointer;
+}
+.post-btn img {
+    width: 12px;
+    height: 12px;
+    position: relative;
+    top: 15px;
+}
+.post-like-btn {
+    display: inline-block;
+    width: 57px;
+    height: 52px;
+    margin-left: 30px;
+}
+.post-like-btn:hover {
+    cursor: pointer;
+}
+.post-like-btn img {
+    width: 12px;
+    height: 12px;
+    position: relative;
+    top: 15px;
+}
+.post-btn-text {
+    font-size: 12px;
+    font-weight: bold;
+    position: relative;
+    top: 13px;
+}
+#post-text-like {
+    color: #8a8989;
+}
+#profile-container-like {
+    display: none;
 }
