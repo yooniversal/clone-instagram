@@ -5,7 +5,8 @@
 <head th:replace="layout/common :: menu('menu')"></head>
 <!--프로필 섹션-->
 <main class="profile_main">
-  <section class="profile">
+  <div style="display: none;" id="currentUser" data-user-id="[[${#authentication.principal.user.id}]]" data-user-name="[[${#authentication.principal.user.name}]]" data-user-image="[[${#authentication.principal.user.imageUrl}]]"></div>
+  <section class="profile" id="profile-section">
     <!--유저정보 컨테이너-->
     <div class="profileContainer">
       <!--유저 이미지-->
@@ -78,6 +79,13 @@
   </div>
   <!--로그아웃, 회원정보 변경 모달 end-->
 
+  <!--업로드 상세 정보 모달-->
+  <div class="modal-upload" id="modal-upload">
+    <div class="upload" id="modal-upload-size">
+      <div class="upload-main-block" id="uploadPostInfoModal"></div>
+    </div>
+  </div>
+
   <!--포스트 상세 정보 모달-->
   <div class="modal-post" id="modal-post">
     <div class="subscribe">
@@ -122,9 +130,7 @@
   <div id="#mask"></div>
   <footer th:replace="layout/common :: footer('footer')"></footer>
 </main>
-<script th:inline="javascript">
-
+<script src="/js/profile.js" th:inline="javascript">
 </script>
-<script src="/js/profile.js"></script>
 </body>
 </html>

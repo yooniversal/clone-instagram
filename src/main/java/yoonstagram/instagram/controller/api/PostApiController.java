@@ -4,17 +4,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
+import yoonstagram.instagram.domain.Comment;
 import yoonstagram.instagram.domain.Like;
 import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.User;
-import yoonstagram.instagram.domain.dto.LikeDto;
-import yoonstagram.instagram.domain.dto.PostInfoDto;
+import yoonstagram.instagram.domain.dto.*;
 import yoonstagram.instagram.service.LikeService;
 import yoonstagram.instagram.service.PostService;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,11 +94,35 @@ public class PostApiController {
         Collections.sort(posts);
 
         List<LikeDto> likeDtos = new ArrayList<>();
-        for(Post post : posts) {
+        for (Post post : posts) {
             LikeDto likeDto = new LikeDto(post);
             likeDtos.add(likeDto);
         }
 
         return new ResponseEntity<>(likeDtos, HttpStatus.OK);
     }
+
+    @GetMapping("/upload")
+    public ResponseEntity<?> uploadInfo (
+            @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return new ResponseEntity<>(postService.getBlankPostInfoDto(principalDetails.getUser()), HttpStatus.OK);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadPost(@RequestParam("uploadText") String text,
+                                        @RequestParam("uploadTag") String tag,
+                                        @RequestParam("uploadImgUrl") MultipartFile file,
+                                        @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User user = principalDetails.getUser();
+
+        UploadPostDto uploadPostDto = new UploadPostDto();
+        uploadPostDto.setText(text);
+        uploadPostDto.setTag(tag);
+
+        postService.upload(uploadPostDto, file, user.getId());
+        log.info("filesize:{}", file.getSize());
+
+        return new ResponseEntity<>("업로드 성공", HttpStatus.OK);
+    }
+
 }

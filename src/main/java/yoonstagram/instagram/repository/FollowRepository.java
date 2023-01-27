@@ -24,6 +24,7 @@ public class FollowRepository {
                 .setParameter("fromUser", fromUser)
                 .setParameter("toUser", toUser)
                 .executeUpdate();
+        em.flush();
         em.clear();
     }
 

@@ -44,6 +44,7 @@ public class LikeRepository {
         em.createQuery("delete from Like l where l.id = :likeId")
                 .setParameter("likeId", likeId)
                 .executeUpdate();
+        em.flush();
         em.clear();
     }
 }

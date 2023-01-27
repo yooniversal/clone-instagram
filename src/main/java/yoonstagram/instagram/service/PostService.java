@@ -94,6 +94,19 @@ public class PostService {
         return postInfoDto;
     }
 
+    public PostInfoDto getBlankPostInfoDto(User user) {
+        PostInfoDto postInfoDto = new PostInfoDto();
+        postInfoDto.setTag("");
+        postInfoDto.setText("");
+        postInfoDto.setPostImgUrl("");
+
+        // 해당 post 작성 user 정보 설정
+        postInfoDto.setPostUploader(new PostUploaderDto(user.getId(), user.getName(), user.getImageUrl()));
+        postInfoDto.setUploader(true);
+
+        return postInfoDto;
+    }
+
     public Post findOneById(Long id) {
         return postRepository.findOneById(id);
     }

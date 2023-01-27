@@ -17,18 +17,18 @@
         <!--게시물 그리드 배열-->
         <div class="tab-1-content-inner" id ="popular-box">
           <!--아이템들-->
-<!--          <div class="img-box" th:each="post : ${posts}" th:onclick="|postPopup(${post.id}, '.modal-post')|">-->
-<!--            <img th:src="@{${'/upload/' + post.imageUrl}}" />-->
-<!--            <div class="comment">-->
-<!--              <a> <i class="fas fa-heart"></i><span th:text="${post.likeCount}"></span></a>-->
-<!--            </div>-->
-<!--          </div>-->
           <!--아이템들 end-->
         </div>
       </div>
     </div>
   </section>
 </main>
+<!--업로드 상세 정보 모달-->
+<div class="modal-upload" id="modal-upload">
+  <div class="upload" id="modal-upload-size">
+    <div class="upload-main-block" id="uploadPostInfoModal"></div>
+  </div>
+</div>
 <!--포스트 상세 정보 모달-->
 <div class="modal-post">
   <div class="subscribe">
@@ -44,4 +44,5 @@
   /*[/]*/
 </script>
 <script src="/js/popular.js"></script>
+<script src="/js/profile.js"></script>
 </html>

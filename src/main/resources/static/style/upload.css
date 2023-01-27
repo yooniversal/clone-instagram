@@ -126,7 +126,13 @@
     border-top: 1px solid #dbdbdb;
     color: #0095f6;
 }
-
 .input_upload {
-    width: 338px;
+    width: 320px;
+    height: 420px;
+    border: none;
+    resize: none;
+}
+.tag-input {
+    border: none;
+    width: 320px;
 }

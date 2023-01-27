@@ -6,6 +6,11 @@
 <!--프로필셋팅 메인-->
 <main class="main">
   <!--프로필셋팅 섹션-->
+  <div class="modal-upload" id="modal-upload">
+    <div class="upload" id="modal-upload-size">
+      <div class="upload-main-block" id="uploadPostInfoModal"></div>
+    </div>
+  </div>
   <section class="setting-container">
     <!--프로필셋팅 아티클-->
     <article class="setting__content">
@@ -19,7 +24,7 @@
         </div>
       </div>
       <!--프로필 셋팅 아이디 영역 end-->
-
+      <!--업로드 상세 정보 모달-->
       <!--프로필 수정-->
       <form id="profileUpdate" th:action="@{/user/update}" th:object="${userForm}" method="post" enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}" name="id" id="id">
@@ -79,5 +84,6 @@
   </section>
 </main>
 <footer th:replace="layout/common :: footer('footer')"></footer>
+<script src="/js/profile.js"></script>
 </body>
 </html>

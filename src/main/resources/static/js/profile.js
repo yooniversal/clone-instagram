@@ -115,7 +115,6 @@ function postPopup(postId, obj) {
         $("#postInfoModal").append(item);
 
         let modal = document.getElementById(obj.toLocaleString().substring(1));
-
         modal.addEventListener("click", function(e){
             if (!$("#postInfoModal").is(e.target) && $("#postInfoModal").has(e.target).length === 0) {
                 modal.style.display = "none";
@@ -128,6 +127,156 @@ function postPopup(postId, obj) {
     }).fail(error => {
         console.log("post 정보 불러오기 오류", error);
     });
+}
+
+let formData = new FormData();
+
+function uploadPopup(obj) {
+    $(obj).css("display", "flex");
+    $(obj).css("background-color", "rgba(0, 0, 0, 0.3)");
+
+    $.ajax({
+        url: "/api/upload/",
+        dataType: "json"
+    }).done(res => {
+        let item = uploadMainModalInfo();
+        $("#uploadPostInfoModal").append(item);
+
+        let fileSelectEle = document.getElementById('upload-file');
+        fileSelectEle.onclick = function ()
+        {
+            $("#modal-upload-size").animate({
+                width: 875,
+                height: 578
+            });
+
+            $("#uploadPostInfoModal").animate({
+                width: 875
+            });
+
+            // 기존 업로드 화면 삭제
+            let remain_div = document.getElementById('post-box-full');
+            remain_div.remove();
+
+            // 상세 설명 적는 화면으로 전환
+            let newItem = uploadModalInfo(res);
+            $("#uploadPostInfoModal").append(newItem);
+
+            // 공유하기 버튼 추가
+            $("#modify-header").append(
+                `<div class="share-post" id="share-post">
+                    <button class="share-port-button" id="share-port-button" onclick="uploadToPost(formData)">
+                        공유하기
+                    </button>
+                </div>`
+            );
+        }
+    }).fail(error => {
+        console.log("[post 팝업 업로드] 불러오기 오류", error);
+    });
+}
+
+function uploadToPost(formData) {
+    const textInput = document.getElementById("upload-text").value;
+    const tagInput = document.getElementById("upload-tag").value;
+
+    formData.append("uploadText", textInput);
+    formData.append("uploadTag", tagInput);
+
+    $.ajax({
+        type: "post",
+        url: "/api/upload/",
+        data : formData,
+        contentType : false,
+        processData : false
+    }).done(res => {
+        console.log("[post 업로드] 전송 성공", res);
+    }).fail(error => {
+        console.log("[post 업로드] 불러오기 오류", error);
+    });
+
+    let uploadDiv = document.getElementById('uploadPostInfoModal');
+    uploadDiv.remove();
+    location.reload();
+}
+
+function uploadMainModalInfo() {
+    let item = `
+    <div class="modify-header" id="modify-header">
+        <span>새 게시물 만들기</span> 
+        <button class="exit" onclick="modalCancelClose()" id="upload-exit"><i class="fas fa-times"></i></button>
+    </div>`;
+
+    item += `
+    <div class="post-box" id="post-box-full">
+	    <div class="upload-image-form" id="upload-logo">
+		    <img src="/img/upload-logo.png"/>
+	    </div>
+	    <div class="upload-image-description" id="upload-image">
+            사진과 동영상을 여기에 끌어다 놓으세요
+        </div>
+        <label for="upload-file" id="upload-image-input">
+          <div class="cta blue image-button" id="upload-image-button">컴퓨터에서 선택</div>
+        </label>
+        <input type="file" name="uploadImgUrl" id="upload-file" onchange="imageChoose(this)">
+    </div>`;
+    return item;
+}
+
+function uploadModalInfo(postInfoDto) {
+    let item = `
+    <div class="post-box" id="post-box-full" >
+        <div class="upload-description">
+            <!--업로드 Form-->
+            <form class="upload-form" method="post" id="upload-form" enctype="multipart/form-data">
+              <!--프로필 정보-->
+              <div class="upload-profile">
+                <div class="profile-info">
+                    <a href="/user/profile?id=${postInfoDto.postUploader.id}">
+                    <img class="post-img-profile pic" src="/profile_imgs/${postInfoDto.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'" id="upload-user-image"">
+                    </a>  
+                    <span style="font-size:13px;">${postInfoDto.postUploader.name}</span>
+                </div>
+              </div>     
+              <!--설명-->
+              <div class="upload-description-after">
+                <textarea class="input_upload" type="text" name="text" id="upload-text" rows="5"> </textarea>
+              </div>
+              <div class="upload-description-tag">
+                <input type="text" class="tag-input" placeholder="태그. 공백 없이 ,로 구분하여 입력해주세요." name="tag" id="upload-tag" />
+              </div>
+              <!--설명 end-->
+              <!-- 사진 -->
+              <input type="file" style="display: none;" id="uploadImgUrl"/>
+              <!-- 사진 end -->
+            </form>
+            <!--업로드 Form end-->
+        </div>
+        <div class="image-preview">
+            <img src="/img/default.jpg" alt="" id="imageUploadPreview" />
+        </div>
+    </div>`;
+    return item;
+}
+
+function imageChoose(obj) {
+    let f = obj.files[0];
+    if (!f.type.match("image.*")) {
+        alert("이미지를 등록해야 합니다.");
+        return;
+    }
+
+    let reader = new FileReader();
+    reader.onload = (e) => {
+        $("#imageUploadPreview").attr("src", e.target.result);
+        formData.append("uploadImgUrl", obj.files[0]);
+    }
+    reader.readAsDataURL(f); // 이 코드 실행시 reader.onload 실행됨.
+}
+
+function modalCancelClose() {
+    $(".modal-upload-size").css("display", "none");
+    location.reload();
 }
 
 function getPostModalInfo(postInfoDto) {
