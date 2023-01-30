@@ -8,6 +8,7 @@ import yoonstagram.instagram.domain.Like;
 import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.repository.LikeRepository;
+import yoonstagram.instagram.repository.NotificationRepository;
 import yoonstagram.instagram.repository.PostRepository;
 import yoonstagram.instagram.repository.UserRepository;
 
@@ -21,6 +22,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
 
     public List<Like> findLikesWithUser(Long userId) {
         return likeRepository.findLikesWithUser(userId);

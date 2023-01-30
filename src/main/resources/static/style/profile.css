@@ -75,7 +75,7 @@
 .profile .profile-right .name-group .cta {
     margin-right: 0px;
     /*padding: 5px 9px;*/
-    border-radius: 4px;
+    border-radius: 8px;
     color: #262626;
     font-weight: bold;
     font-size: 14px;
@@ -434,6 +434,7 @@ span.post-time {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    object-fit: cover;
 }
 .modal-follower .subscribe .subscribe-list .subscribe__item .subscribe__text {
     padding-top: 5px;
@@ -506,6 +507,7 @@ span.post-time {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    object-fit: cover;
 }
 .modal-following .subscribe .subscribe-list .subscribe__item .subscribe__text {
     padding-top: 5px;
@@ -641,6 +643,14 @@ button.submit-comment:focus {
 }
 #edit-button:hover {
     background: #CCCCCC;
+}
+.follow-btn {
+    background: #0095f6 !important;
+    color: white !important;
+    width: 82px !important;
+}
+.follow-btn:hover {
+    background: #0478d0 !important;
 }
 .cta {
     margin-right: 10px;
@@ -914,6 +924,7 @@ img.comment-pic {
     cursor: pointer;
 }
 #upload-image-button:hover {
+    background: #0478d0 !important;
     cursor: pointer;
 }
 #share-post {
@@ -988,4 +999,34 @@ img.comment-pic {
 }
 #profile-container-like {
     display: none;
+}
+.notification-friend-profiles {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 15px;
+    margin-left: 20px;
+    width: 575px;
+}
+.notification-profile-text {
+    display: flex;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    margin-left: 8px;
+}
+.notification-follow {
+    margin-left: auto;
+    width: 70px;
+    font-size: 14px;
+    background: #0095f6;
+    border: 0;
+    color: white;
+    margin-top: 2px;
+    border-radius: 8px;
+}
+.notification-follow:hover {
+    background: #0478d0;
+}
+.notification-img {
+    width: 40px;
+    height: 40px;
 }

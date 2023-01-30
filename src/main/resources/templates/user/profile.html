@@ -24,8 +24,8 @@
           <h2 style="font-size: 1.2em; margin-top: 25px; margin-bottom: 20px" th:text="${findUserDto.name}"></h2>
           <button class="cta" id="edit-button" th:if="${findUserDto.login}" onclick="location.href='/user/update'">프로필 편집</button>
           <span></span>
-          <button class="cta" th:if="!${findUserDto.login} and !${findUserDto.follow}" th:onclick="|toggleSubscribe(${findUserDto.id}, this)|">팔로우</button>
-          <button class="cta" th:if="!${findUserDto.login} and ${findUserDto.follow}" th:onclick="|toggleSubscribe(${findUserDto.id}, this)|">팔로잉</button>
+          <button class="follow-btn cta" th:if="!${findUserDto.login} and !${findUserDto.follow}" th:onclick="|toggleSubscribe(${findUserDto.id}, this)|">팔로우</button>
+          <button class="follow-btn cta" th:if="!${findUserDto.login} and ${findUserDto.follow}" th:onclick="|toggleSubscribe(${findUserDto.id}, this)|">팔로잉</button>
           <button class="modi" th:if="${findUserDto.login}" onclick="popup('.modal-info')">
             <i class="fas fa-cog"></i>
           </button>

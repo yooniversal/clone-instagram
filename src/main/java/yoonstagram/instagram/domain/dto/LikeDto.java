@@ -9,7 +9,7 @@ import yoonstagram.instagram.domain.Post;
 public class LikeDto {
     private Long postId;
     private String postImageUrl;
-    private int likeCount;
+    private Long likeCount;
 
     public LikeDto(Like like) {
         Post post = like.getPost();

@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
-import yoonstagram.instagram.domain.Comment;
-import yoonstagram.instagram.domain.Like;
-import yoonstagram.instagram.domain.Post;
-import yoonstagram.instagram.domain.User;
+import yoonstagram.instagram.domain.*;
 import yoonstagram.instagram.domain.dto.*;
 import yoonstagram.instagram.service.LikeService;
+import yoonstagram.instagram.service.NotificationService;
 import yoonstagram.instagram.service.PostService;
 
 import javax.validation.Valid;
@@ -33,6 +31,7 @@ public class PostApiController {
 
     private final PostService postService;
     private final LikeService likeService;
+    private final NotificationService notificationService;
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<?> postInfo (
@@ -44,14 +43,26 @@ public class PostApiController {
     @PostMapping("/post/{postId}/likes")
     public ResponseEntity<?> likes(@PathVariable("postId") Long postId,
                                    @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        likeService.likes(postId, principalDetails.getUser().getId());
+        User currentUser = principalDetails.getUser();
+        likeService.likes(postId, currentUser.getId());
+
+        Post post = postService.findOneById(postId);
+        if(!post.getUser().getId().equals(currentUser.getId()))
+            notificationService.save(post.getUser(), currentUser, post.getImageUrl(), NotificationStatus.LIKE, postId);
+
         return new ResponseEntity<>("좋아요 성공", HttpStatus.OK);
     }
 
     @DeleteMapping("/post/{postId}/likes")
     public ResponseEntity<?> unLikes(@PathVariable("postId") Long postId,
                                      @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        likeService.unLikes(postId, principalDetails.getUser().getId());
+        User currentUser = principalDetails.getUser();
+        likeService.unLikes(postId, currentUser.getId());
+
+        Post post = postService.findOneById(postId);
+        if(!post.getUser().getId().equals(currentUser.getId()))
+            notificationService.cancel(currentUser.getId(), NotificationStatus.LIKE, postId);
+
         return new ResponseEntity<>("좋아요 취소 성공", HttpStatus.OK);
     }
 

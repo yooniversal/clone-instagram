@@ -36,12 +36,30 @@
         </div>
         <form action="/post/searchForm" id="search-form" method="post"><input id="tag-input" name="tag" type="text" class="input-search" placeholder="검색"></form>
         <div class="nav-2">
-            <a href="/"><img src="/img/home.png" alt="홈"></a>
-<!--            <a href="/post/upload"><img src="/img/upload.png" alt="업로드"></a>-->
-            <a onclick="uploadPopup('.modal-upload')"><img src="/img/upload.png" alt="업로드"></a>
-            <a href="/post/popular"><img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색"></a>
-            <a href="/post/likes"><img  src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트"></a>
+            <div style="display: flex;">
+                <a href="/"><img src="/img/home.png" alt="홈"></a>
+                <span>홈</span>
+            </div>
+            <div style="display: flex;">
+                <a><img src="/img/search.png" alt="검색" th:onclick=""></a>
+                <span>검색</span>
+            </div>
+            <div style="display: flex;">
+                <a href="/post/popular"><img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색"></a>
+                <span>탐색 탭</span>
+            </div>
+            <div style="display: flex;">
+                <a href="/user/notification"><img  src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="알림"></a>
+                <span>알림</span>
+            </div>
+            <div style="display: flex;">
+                <a onclick="uploadPopup('.modal-upload')"><img src="/img/upload.png" alt="업로드"></a>
+                <span>만들기</span>
+            </div>
+        </div>
+        <div style="display: flex;" id="nav-profile">
             <a th:href="@{/user/profile(id=${currentUserId})}" ><img class="pic" th:src="@{${'/profile_imgs/' + currentUserImageUrl}}" onerror="this.src='/img/default_profile.jpg'"></a>
+            <span>프로필</span>
         </div>
     </div>
 </nav>

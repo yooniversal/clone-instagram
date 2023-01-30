@@ -1,21 +1,21 @@
 package yoonstagram.instagram.controller.api;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
+import yoonstagram.instagram.domain.NotificationStatus;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.domain.dto.SimpleUserDto;
 import yoonstagram.instagram.service.FollowService;
+import yoonstagram.instagram.service.NotificationService;
 import yoonstagram.instagram.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
@@ -23,18 +23,24 @@ public class FollowApiController {
 
     private final FollowService followService;
     private final UserService userService;
+    private final NotificationService notificationService;
 
     @PostMapping("/follow/{userId}")
     public ResponseEntity<?> followUser(@PathVariable("userId") Long userId,
                                         @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        followService.follow(principalDetails.getUser().getId(), userId);
+        User currentUser = principalDetails.getUser();
+        User fromUser = userService.findOneById(userId);
+        followService.follow(currentUser.getId(), userId);
+        notificationService.save(fromUser, currentUser, null, NotificationStatus.FOLLOW, 0L);
         return new ResponseEntity<>("팔로우 성공", HttpStatus.OK);
     }
 
     @DeleteMapping("/follow/{userId}")
     public ResponseEntity<?> unFollowUser(@PathVariable("userId") Long userId,
                                           @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        followService.unFollow(principalDetails.getUser().getId(), userId);
+        User currentUser = principalDetails.getUser();
+        followService.unFollow(currentUser.getId(), userId);
+        notificationService.cancel(currentUser.getId(), NotificationStatus.FOLLOW, userId);
         return new ResponseEntity<>("팔로우 취소 성공", HttpStatus.OK);
     }
 

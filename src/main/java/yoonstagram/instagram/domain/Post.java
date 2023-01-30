@@ -18,8 +18,7 @@ public class Post implements Comparable<Post> {
     @Column(name = "post_id")
     private Long id;
 
-    private int likeCount;
-
+    private Long likeCount;
     private String imageUrl;
     private String description;
     private String tag;
@@ -44,11 +43,12 @@ public class Post implements Comparable<Post> {
         post.setUser(user);
         post.setDate(LocalDateTime.now());
         user.getPosts().add(post);
+        post.setLikeCount(0L);
         return post;
     }
 
     @Override
     public int compareTo(Post o) {
-        return o.getLikeCount() - getLikeCount();
+        return (int) (o.getLikeCount() - getLikeCount());
     }
 }

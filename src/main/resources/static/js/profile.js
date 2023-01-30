@@ -511,3 +511,92 @@ function postModeToList() {
     document.getElementById("post-text-list").style.color = "black";
     document.getElementById("grid-img").src = "/img/grid.png";
 }
+
+function notificationInfo() {
+    $.ajax({
+        url: `/api/user/notification/`,
+        dataType: "json"
+    }).done(res => {
+        let item = ``
+        res.forEach((notificationDto) => {
+            console.log(notificationDto);
+            item += getNotificationItem(notificationDto);
+        });
+        console.log(item);
+
+        $("#notification-list").append(item);
+    }).fail(error => {
+        console.log("알림 정보 불러오기 오류", error);
+    });
+}
+notificationInfo();
+
+function getNotificationItem(notificationDto) {
+    let msg = "profile-info";
+    if(notificationDto.status == "FOLLOW") {
+        msg = notificationDto.fromUserName + "님이 회원님을 팔로우하기 시작했습니다.";
+    } else {
+        msg = notificationDto.fromUserName + "님이 회원님의 사진을 좋아합니다."
+    }
+
+    let button = "button";
+    if(notificationDto.status == "FOLLOW") {
+        button = `<button class="cta notification-follow" onclick="toggleSubscribe(${notificationDto.fromUserId}, this)">
+                    팔로잉
+                </button>`
+    } else {
+        button = `<img class="notification-img" src="/upload/${notificationDto.postImageUrl}" />
+                `
+    }
+
+    let item = `<div class="notification-friend-profiles">
+          <a href="/user/profile?id=${notificationDto.fromUserId}">
+            <img class="img-profiles pic" src="/profile_imgs/${notificationDto.fromUserImageUrl}" onerror="this.src='/img/default_profile.jpg';"/>
+          </a>
+          <div class="notification-profile-text">
+            <span class="userID-follow point-span">
+                ${msg}
+            </span>
+            <span class="sub-span-notification">
+                ${diffentTime(notificationDto.time)}
+            </span>
+          </div>
+          ${button}
+        </div>
+        `
+
+    return item;
+}
+
+function diffentTime(date) {
+    const currentTime = new Date();
+    const postTimeStamp = new Date(date);
+    const postTimeInMillis = postTimeStamp.getTime();
+    const postTime = new Date(postTimeInMillis);
+
+    const timeDiff = currentTime - postTime;
+    const msDiff = timeDiff;
+    const secDiff = msDiff / 1000;
+    const minDiff = secDiff / 60;
+    const hourDiff = minDiff / 60;
+    const dayDiff = hourDiff / 24;
+    const monthDiff = dayDiff / 30;
+    const yearDiff = monthDiff / 12;
+
+    let timeAgo = "";
+    if (yearDiff >= 1) {
+        timeAgo = Math.floor(yearDiff) + "년";
+    } else if (monthDiff >= 1) {
+        timeAgo = Math.floor(monthDiff) + "개월";
+    } else if (dayDiff >= 1) {
+        timeAgo = Math.floor(dayDiff) + "일";
+    } else if (hourDiff >= 1) {
+        timeAgo = Math.floor(hourDiff) + "시간";
+    } else if (minDiff >= 1) {
+        timeAgo = Math.floor(minDiff) + "분";
+    } else {
+        timeAgo = "지금";
+    }
+
+    return timeAgo;
+}

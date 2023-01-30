@@ -1,5 +1,6 @@
 /*프로필셋팅 메인*/
 .main {
+    width: 80%;
     padding-top: 54px;
     background-color: #fafafa;
 }
@@ -114,6 +115,7 @@
     padding: 5px 9px;
     border-radius: 4px;
     color: #fff;
+    font-weight: bold;
     cursor: pointer;
 }
 
