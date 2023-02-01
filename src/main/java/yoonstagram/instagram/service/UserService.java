@@ -59,6 +59,11 @@ public class UserService {
         return findUsers.get(0);
     }
 
+    public List<User> findBySimilarName(String name) {
+        List<User> findUsers = userRepository.findBySimilarName(name);
+        return findUsers;
+    }
+
     @Transactional
     public void update(Long id, String username) {
         User user = userRepository.findOneById(id);

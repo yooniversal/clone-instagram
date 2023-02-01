@@ -3,6 +3,8 @@
 <head th:replace="layout/common :: head('Instargram')"></head>
 <body>
 <head th:replace="layout/common :: menu('menu')"></head>
+<head th:replace="layout/common :: search-box('search-box')"></head>
+<head th:replace="layout/common :: notification-box('notification-box')"></head>
 <!--프로필 섹션-->
 <main class="profile_main">
   <section class="profile" id="profile-section">
@@ -57,6 +59,12 @@
       <span class="post-btn-text" id="post-text-like">좋아요</span>
     </div>
   </div>
+  <!-- 게시물 수정 모달 -->
+  <div class="modal-edit" id="modal-edit" style="z-index: 110;">
+    <div class="model-edit-post" id="model-edit-post">
+      <div class="upload-main-block" id="editPostModal"></div>
+    </div>
+  </div>
   <!--게시물 섹션-->
   <section id="tab-content">
     <!--게시물 컨테이너-->
@@ -101,6 +109,16 @@
       <button onclick="location.href='/user/update'">회원정보 변경</button>
       <button onclick="location.href='/logout'">로그아웃</button>
       <button onclick="closePopup('.modal-info')">취소</button>
+    </div>
+  </div>
+  <!--로그아웃, 회원정보 변경 모달 end-->
+
+  <!--로그아웃, 회원정보 변경 모달-->
+  <div class="post-edit-modal-info" style="z-index: 110;">
+    <div class="modal" style="width: 300px;">
+      <button onclick="editPostPopup('.modal-edit'), closePopup('.post-edit-modal-info')">수정</button>
+      <button onclick="deletePost(), closePopup('.post-edit-modal-info')">삭제</button>
+      <button onclick="closePopup('.post-edit-modal-info')">취소</button>
     </div>
   </div>
   <!--로그아웃, 회원정보 변경 모달 end-->

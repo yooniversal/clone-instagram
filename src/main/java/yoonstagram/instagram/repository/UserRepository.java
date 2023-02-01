@@ -37,4 +37,10 @@ public class UserRepository {
                 .setParameter("email", email)
                 .getResultList();
     }
+
+    public List<User> findBySimilarName(String name) {
+        return em.createQuery("select u from User u where u.name like concat('%', :name, '%')", User.class)
+                .setParameter("name", name)
+                .getResultList();
+    }
 }

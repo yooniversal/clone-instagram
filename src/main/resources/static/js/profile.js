@@ -79,8 +79,14 @@ function popup(obj) {
     $(obj).css("display", "flex");
 }
 
+function postEditPopup(obj, postId) {
+    $(obj).css("display", "flex");
+    document.querySelector(obj).style.setProperty('--postId', postId);
+}
+
 function closePopup(obj) {
     $(obj).css("display", "none");
+    location.reload();
 }
 
 // 사용자 정보(회원정보, 로그아웃, 닫기) 모달
@@ -111,7 +117,7 @@ function postPopup(postId, obj) {
         url: "/api/post/" + postId,
         dataType: "json"
     }).done(res => {
-        let item = getPostModalInfo(res);
+        let item = getPostModalInfo(res, postId);
         $("#postInfoModal").append(item);
 
         let modal = document.getElementById(obj.toLocaleString().substring(1));
@@ -171,6 +177,7 @@ function uploadPopup(obj) {
                 </div>`
             );
         }
+
     }).fail(error => {
         console.log("[post 팝업 업로드] 불러오기 오류", error);
     });
@@ -228,7 +235,7 @@ function uploadModalInfo(postInfoDto) {
     <div class="post-box" id="post-box-full" >
         <div class="upload-description">
             <!--업로드 Form-->
-            <form class="upload-form" method="post" id="upload-form" enctype="multipart/form-data">
+            <form class="upload-form" style="position: absolute; right: 10px;" method="post" id="upload-form" enctype="multipart/form-data">
               <!--프로필 정보-->
               <div class="upload-profile">
                 <div class="profile-info">
@@ -279,7 +286,7 @@ function modalCancelClose() {
     location.reload();
 }
 
-function getPostModalInfo(postInfoDto) {
+function getPostModalInfo(postInfoDto, postId) {
     let diffentTime = function () {
         const currentTime = new Date();
         const postTimeStamp = new Date(postInfoDto.date);
@@ -319,7 +326,7 @@ function getPostModalInfo(postInfoDto) {
             <span>${postInfoDto.postUploader.name}</span> `;
     item += `<button class="exit" onclick="modalClose()"><i class="fas fa-times"></i></button>`
     if(postInfoDto.uploader) {
-        item += `<button class="edit" onclick="location.href='/post/update/${postInfoDto.id}'"><i class="far fa-edit"></i></button>`
+        item += `<button class="edit" onclick="postEditPopup('.post-edit-modal-info', ${postId})"><i class="far fa-edit"></i></button>`
     }
     item += `
 
@@ -519,12 +526,10 @@ function notificationInfo() {
     }).done(res => {
         let item = ``
         res.forEach((notificationDto) => {
-            console.log(notificationDto);
             item += getNotificationItem(notificationDto);
         });
-        console.log(item);
 
-        $("#notification-list").append(item);
+        $("#notification-info").append(item);
     }).fail(error => {
         console.log("알림 정보 불러오기 오류", error);
     });
@@ -534,36 +539,43 @@ notificationInfo();
 function getNotificationItem(notificationDto) {
     let msg = "profile-info";
     if(notificationDto.status == "FOLLOW") {
-        msg = notificationDto.fromUserName + "님이 회원님을 팔로우하기 시작했습니다.";
+        msg = `<span style="font-weight: bold;font-size: 13px;">${notificationDto.fromUserName}</span>
+                님이 회원님을 팔로우하기 시작했습니다.`;
     } else {
-        msg = notificationDto.fromUserName + "님이 회원님의 사진을 좋아합니다."
+        msg = `<span style="font-weight: bold;font-size: 13px;">${notificationDto.fromUserName}</span>
+                님이 회원님의 사진을 좋아합니다.`;
     }
 
-    let button = "button";
+    let info = "button";
     if(notificationDto.status == "FOLLOW") {
-        button = `<button class="cta notification-follow" onclick="toggleSubscribe(${notificationDto.fromUserId}, this)">
+        info = `
+                <div class="notification-profile-text" style="width: 240px; margin-right:5px;">
+                    <span class="notification-profile-info">
+                        ${msg}
+                        <span class="sub-span-notification">${diffentTime(notificationDto.time)}</span>
+                    </span>
+                </div>
+                <button class="cta notification-follow" onclick="toggleSubscribe(${notificationDto.fromUserId}, this)">
                     팔로잉
                 </button>`
     } else {
-        button = `<img class="notification-img" src="/upload/${notificationDto.postImageUrl}" />
+        info = `<div class="notification-profile-text">
+                    <span class="notification-profile-info">
+                        ${msg}
+                        <span class="sub-span-notification">${diffentTime(notificationDto.time)}</span>
+                    </span>
+                </div>
+                <img class="notification-img" src="/upload/${notificationDto.postImageUrl}" />
                 `
     }
 
     let item = `<div class="notification-friend-profiles">
-          <a href="/user/profile?id=${notificationDto.fromUserId}">
-            <img class="img-profiles pic" src="/profile_imgs/${notificationDto.fromUserImageUrl}" onerror="this.src='/img/default_profile.jpg';"/>
-          </a>
-          <div class="notification-profile-text">
-            <span class="userID-follow point-span">
-                ${msg}
-            </span>
-            <span class="sub-span-notification">
-                ${diffentTime(notificationDto.time)}
-            </span>
-          </div>
-          ${button}
-        </div>
-        `
+                  <a href="/user/profile?id=${notificationDto.fromUserId}">
+                    <img class="img-profiles pic" src="/profile_imgs/${notificationDto.fromUserImageUrl}" onerror="this.src='/img/default_profile.jpg';"/>
+                  </a>
+                  ${info}
+                </div>
+                `
 
     return item;
 }
@@ -599,4 +611,241 @@ function diffentTime(date) {
     }
 
     return timeAgo;
+}
+
+let search_button_clicked = false;
+let notification_button_clicked = false;
+
+function toggleTab(status) {
+    const spans = document.querySelectorAll(".nav-2 span")
+    const logo_instagram = document.querySelector(".logo_instagram");
+    const logo_instagram_icon = document.querySelector(".logo_instagram_icon");
+    const common_icons = document.querySelectorAll(".common-icon");
+    const search_box = document.querySelector(".search-box");
+    const notification_box = document.querySelector(".notification-box");
+
+    logo_instagram.removeEventListener('animationend', toggleTab);
+    logo_instagram_icon.removeEventListener('animationend', toggleTab);
+
+    if(status === 1) search_button_clicked = !search_button_clicked;
+    else notification_button_clicked = !notification_button_clicked;
+
+    if((status === 1 && search_button_clicked === true) || (status === 2 && notification_button_clicked === true)) {
+
+        // nav 유지하고 추가되는 창만 교체
+        if(status === 1 && notification_button_clicked === true) {
+            notification_button_clicked = false;
+            notification_box.style.animation = "slideReverse 0.5s ease-in-out forwards";
+
+            search_box.style.display = "block";
+            search_box.style.animation = "slide 0.5s ease-in-out forwards";
+            return;
+        } else if(status === 2 && search_button_clicked === true) {
+            search_button_clicked = false;
+            search_box.style.animation = "slideReverse 0.5s ease-in-out forwards";
+
+            notification_box.style.display = "block";
+            notification_box.style.animation = "slide 0.5s ease-in-out forwards";
+            return;
+        }
+
+        $("#nav").animate({
+            width: 66
+        });
+
+        // 메뉴 글자 가리기
+        for (const span of spans) {
+            span.style.display = 'none';
+        }
+
+        // instagram 글자 로고 -> 아이콘
+        // instagram 글자 로고 서서히 사라짐
+        logo_instagram.style.animation = "disappear 0.3s ease-in-out";
+
+        // 글자 로고가 다 사라진 뒤 아이콘이 서서히 나타나도록 설정
+        logo_instagram.addEventListener('animationend', function (e) {
+            if((status === 1 && search_button_clicked === true) || (status === 2 && notification_button_clicked === true)) {
+                logo_instagram.style.opacity = '0';
+                logo_instagram_icon.style.opacity = '1';
+                logo_instagram_icon.style.animation = "appear 0.3s ease-in-out";
+
+                for (const common_icon of common_icons) {
+                    common_icon.style.setProperty('--beforeWidth', '50px');
+                    common_icon.style.setProperty('--beforeBorder', '1px solid #b2b2b2');
+                }
+
+                if(status === 1) {
+                    search_box.style.display = "block";
+                    search_box.style.animation = "slide 0.5s ease-in-out forwards";
+                } else {
+                    notification_box.style.display = "block";
+                    notification_box.style.animation = "slide 0.5s ease-in-out forwards";
+                }
+            }
+        }, { once : true});
+
+    } else {
+
+        $("#nav").animate({
+            width: 245
+        }, function() {
+            // 메뉴 글자 복구
+            for (const span of spans) {
+                span.style.display = 'inline';
+            }
+        });
+
+        // instagram 글자 로고 -> 아이콘
+        // instagram 아이콘 서서히 사라짐
+        logo_instagram_icon.style.animation = "disappear 0.3s ease-in-out";
+
+        // 아이콘이 다 나타난 뒤 글자 로고가 서서히 나타나도록 설정
+        logo_instagram_icon.addEventListener('animationend', function (e) {
+            if((status === 1 && search_button_clicked === false) || (status === 2 && notification_button_clicked === false)) {
+                logo_instagram_icon.style.opacity = '0';
+                logo_instagram.style.opacity = '1';
+                logo_instagram.style.animation = "appear 0.3s ease-in-out";
+
+                for (const common_icon of common_icons) {
+                    common_icon.style.setProperty('--beforeWidth', '210px');
+                    common_icon.style.setProperty('--beforeBorder', '0');
+                }
+
+                if(status === 1) {
+                    // search_box.style.display = "none";
+                    search_box.style.animation = "slideReverse 0.5s ease-in-out forwards";
+                } else {
+                    // notification_box.style.display = "none";
+                    notification_box.style.animation = "slideReverse 0.5s ease-in-out forwards";
+                }
+            }
+        }, { once : true});
+    }
+}
+
+function goSearch(input) {
+    $.ajax({
+        url: "/api/search/" + input,
+        dataType: "json"
+    }).done(res => {
+        // 검색 결과 초기화
+        $("#search-result").empty()
+
+        let item = ``
+        res.forEach((userDto) => {
+            item += getSearchItem(userDto);
+        });
+
+        $("#search-result").append(item);
+    }).fail(error => {
+        console.log("[search] 불러오기 오류", error);
+    });
+}
+
+function getSearchItem(userDto) {
+    let item = `
+                <div class="search-friend-profile"">
+                    <a href="/user/profile?id=${userDto.id}">
+                        <img class="img-profile pic" src="/profile_imgs/${userDto.imageUrl}" onerror="src='/img/default_profile.jpg'">
+                    </a>
+                    <div class="search-profile-text">
+                        <span class="search-user-name">
+                            ${userDto.name}
+                        </span>
+                        <span class="search-user-username">
+                            ${userDto.username}
+                        </span>
+                    </div>
+                </div>
+                `;
+
+    return item;
+}
+
+function editPostPopup(obj) {
+    let postId = window.getComputedStyle(document.querySelector('.post-edit-modal-info')).getPropertyValue('--postId');
+    $(obj).css("display", "flex");
+    $(obj).css("background-color", "rgba(0, 0, 0, 0.3)");
+
+    $.ajax({
+        url: "/api/post/" + postId,
+        dataType: "json"
+    }).done(res => {
+
+        // 수정 화면
+        let item = `<div class="modify-header" id="modify-header">
+                        <span>정보 수정</span> 
+                        <button class="exit" onclick="editModalCancelClose()" id="upload-exit"><i class="fas fa-times"></i></button>
+                    </div>`
+
+        item += uploadModalInfo(res);
+        $("#editPostModal").append(item);
+        document.getElementById("upload-text").value = res.text;
+        document.getElementById("upload-tag").value = res.tag;
+        document.getElementById("imageUploadPreview").src = "/upload/" + res.postImgUrl;
+
+        $("#model-edit-post").animate({
+            width: 875,
+            height: 578
+        });
+
+        $("#editPostModal").animate({
+            width: 875
+        });
+
+        // 완료 버튼 추가
+        $("#modify-header").append(
+            `<div class="share-post" id="share-post">
+                <button class="share-port-button" id="share-port-button" onclick="editPostComplete(${postId})">
+                    완료
+                </button>
+             </div>`
+        );
+
+    }).fail(error => {
+        console.log("[post 수정 팝업] 불러오기 오류", error);
+    });
+}
+
+function editPostComplete(postId) {
+    const textInput = document.getElementById("upload-text").value;
+    const tagInput = document.getElementById("upload-tag").value;
+
+    let formData = new FormData();
+    formData.append("postId", postId);
+    formData.append("text", textInput);
+    formData.append("tag", tagInput);
+
+    $.ajax({
+        type: "post",
+        url: "/api/edit/",
+        data : formData,
+        contentType : false,
+        processData : false
+    }).done(res => {
+        console.log("[post 업데이트] 전송 성공", res);
+    }).fail(error => {
+        console.log("[post 업데이트] 오류", error);
+    });
+
+    document.getElementById('editPostModal').remove();
+    location.reload();
+}
+
+function editModalCancelClose() {
+    $(".model-edit-post").css("display", "none");
+    location.reload();
+}
+
+function deletePost() {
+    let postId = window.getComputedStyle(document.querySelector('.post-edit-modal-info')).getPropertyValue('--postId');
+
+    $.ajax({
+        type: "delete",
+        url: "/api/post/delete/" + postId
+    }).done(res => {
+        console.log("[post 삭제] 성공");
+    }).fail(error => {
+        console.log("[post 삭제] 실패", error);
+    });
 }

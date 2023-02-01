@@ -128,9 +128,11 @@
 }
 .input_upload {
     width: 320px;
-    height: 420px;
+    height: 410px;
     border: none;
     resize: none;
+    font-size: 15px;
+    margin-top: 10px;
 }
 .tag-input {
     border: none;

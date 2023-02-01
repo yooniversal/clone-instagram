@@ -3,6 +3,8 @@
 <head th:replace="layout/common :: head('Instargram')"></head>
 <body>
 <head th:replace="layout/common :: menu('menu')"></head>
+<head th:replace="layout/common :: search-box('search-box')"></head>
+<head th:replace="layout/common :: notification-box('notification-box')"></head>
 <main class="main">
   <!--업로드 상세 정보 모달-->
   <div class="modal-upload" id="modal-upload">
@@ -17,8 +19,10 @@
         <tr th:each="user : ${users}">
           <li>
             <div class="recommend-friend-profiles">
-              <a th:href="@{${'/user/profile?id=' + user.id}}"><img class="img-profiles pic" th:src="@{${'/profile_imgs/' + user.imageUrl}}" onerror="src='/img/default_profile.jpg'"></a>
-              <div class="profile-text">
+              <a th:href="@{${'/user/profile?id=' + user.id}}">
+                <img class="img-profiles pic" style="margin-top: 2px;" th:src="@{${'/profile_imgs/' + user.imageUrl}}" onerror="src='/img/default_profile.jpg'">
+              </a>
+              <div class="recommend-profile-text">
                 <span class="userID-follow point-span">
                     <td th:text="${user.name}"></td>
                 </span>

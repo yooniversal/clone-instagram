@@ -14,6 +14,15 @@
     padding-bottom: 40px;
 }
 
+#profile-container-post, #profile-container-like {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 935px;
+    margin: 0 -110px 100px;
+    height: 100%;
+}
+
 /* Profile */
 .profile {
     height: 300px;
@@ -690,7 +699,7 @@ button.submit-comment:focus {
     cursor: pointer;
 }
 
-.modal-info {
+.modal-info, .post-edit-modal-info {
     position: fixed;
     top: 0;
     left: 0;
@@ -701,21 +710,24 @@ button.submit-comment:focus {
     align-items: center;
     justify-content: center;
 }
-.modal-info .modal {
+.modal-info .modal,
+.post-edit-modal-info .modal {
     width: 400px;
     background-color: #fff;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
 }
-.modal-info .modal button {
+.modal-info .modal button,
+.post-edit-modal-info .modal button {
     border: 0;
     background-color: transparent;
     height: 48px;
     cursor: pointer;
 }
 
-.modal-info .modal button:not(:last-child) {
+.modal-info .modal button:not(:last-child),
+.post-edit-modal-info .modal button:not(:last-child) {
     border-bottom: 1px solid #dbdbdb;
 }
 
@@ -864,7 +876,7 @@ img.comment-pic {
     width: 535px;
     height: 575px;
 }
-.modal-upload {
+.modal-upload, .modal-edit {
     position: fixed;
     float: left;
     top: 0;
@@ -877,14 +889,21 @@ img.comment-pic {
     justify-content: center;
     z-index: 105;
 }
-.modal-upload .upload {
+.modal-upload .upload,
+.modal-edit .model-edit-post {
     width: 535px;
     height: 578px;
     background-color: #fff;
     padding: 0 40px;
     border-radius: 10px;
     display: flex;
+    position: relative;
     flex-direction: column;
+}
+#editPostModal {
+    position: absolute;
+    top: 2px;
+    right: 0;
 }
 .image-preview img {
     width: inherit;
@@ -1003,30 +1022,29 @@ img.comment-pic {
 .notification-friend-profiles {
     display: flex;
     align-items: flex-start;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-left: 20px;
     width: 575px;
 }
 .notification-profile-text {
     display: flex;
-    margin-top: 6px;
-    margin-bottom: 10px;
-    margin-left: 8px;
+    width: 260px;
+    margin: 6px 20px 5px 8px;
 }
 .notification-follow {
-    margin-left: auto;
-    width: 70px;
+    width: 75px;
+    height: 32px;
     font-size: 14px;
-    background: #0095f6;
+    background: #eee;
     border: 0;
-    color: white;
-    margin-top: 2px;
+    margin-top: 12px;
     border-radius: 8px;
 }
 .notification-follow:hover {
-    background: #0478d0;
+    background: #CCCCCC;
 }
 .notification-img {
+    margin-top: 10px;
     width: 40px;
     height: 40px;
 }

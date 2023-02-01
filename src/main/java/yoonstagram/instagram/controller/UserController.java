@@ -50,7 +50,7 @@ public class UserController {
         findUserDto.setLogin(currentUser.getId().equals(findUser.getId()));
 
         // 좋아요 게시물 처리
-        List<Like> likes = likeService.findLikesWithUser(currentUser.getId());
+        List<Like> likes = likeService.findLikesWithUser(id);
         List<PostInfoDto> postDtos = new ArrayList<>();
         for(Like like : likes) {
             Post post = like.getPost();

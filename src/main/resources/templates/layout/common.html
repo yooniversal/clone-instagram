@@ -26,43 +26,59 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
-<nav th:fragment="menu(menu)">
+<nav th:fragment="menu(menu)" id="nav">
     <input type="hidden" id="principalId" th:value="${currentUserId}"/>
     <div class="nav-container">
         <div class="nav-1">
             <a href="/">
                 <img class="logo_instagram" src="/img/logo_text.png" alt="logo_text">
+                <img class="logo_instagram_icon" src="/img/instagram_main.png" alt="logo_icon">
             </a>
         </div>
-        <form action="/post/searchForm" id="search-form" method="post"><input id="tag-input" name="tag" type="text" class="input-search" placeholder="검색"></form>
         <div class="nav-2">
-            <div style="display: flex;">
+            <div class="common-icon">
                 <a href="/"><img src="/img/home.png" alt="홈"></a>
                 <span>홈</span>
             </div>
-            <div style="display: flex;">
-                <a><img src="/img/search.png" alt="검색" th:onclick=""></a>
+            <div class="common-icon" th:onclick="|toggleTab(1)|">
+                <a><img src="/img/search.png" alt="검색"></a>
                 <span>검색</span>
             </div>
-            <div style="display: flex;">
+            <div class="common-icon">
                 <a href="/post/popular"><img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색"></a>
                 <span>탐색 탭</span>
             </div>
-            <div style="display: flex;">
-                <a href="/user/notification"><img  src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="알림"></a>
+            <div class="common-icon" th:onclick="|toggleTab(2)|">
+                <a><img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="알림"></a>
                 <span>알림</span>
             </div>
-            <div style="display: flex;">
+            <div class="common-icon">
                 <a onclick="uploadPopup('.modal-upload')"><img src="/img/upload.png" alt="업로드"></a>
                 <span>만들기</span>
             </div>
-        </div>
-        <div style="display: flex;" id="nav-profile">
-            <a th:href="@{/user/profile(id=${currentUserId})}" ><img class="pic" th:src="@{${'/profile_imgs/' + currentUserImageUrl}}" onerror="this.src='/img/default_profile.jpg'"></a>
-            <span>프로필</span>
+            <div class="common-icon">
+                <a th:href="@{/user/profile(id=${currentUserId})}" ><img class="pic" th:src="@{${'/profile_imgs/' + currentUserImageUrl}}" onerror="this.src='/img/default_profile.jpg'"></a>
+                <span>프로필</span>
+            </div>
         </div>
     </div>
 </nav>
+<div class="search-box" th:fragment="search-box(search-box)">
+    <div id="search-title">검색</div>
+<!--    <form action="/post/searchForm" id="search-form" method="post" onsubmit="goSearch(document.getElementById('tag-input').value); return false;">-->
+    <form id="search-form" method="post" onsubmit="goSearch(document.getElementById('tag-input').value); return false;">
+        <input id="tag-input" name="tag" type="text" class="input-search" placeholder="검색">
+    </form>
+    <div class="search-result" id="search-result">
+
+    </div>
+</div>
+<div class="notification-box" th:fragment="notification-box(notification-box)">
+    <div id="notification-title">알림</div>
+    <div class="notification-info" id="notification-info">
+
+    </div>
+</div>
 
 <footer th:fragment="footer(footer)">
     <p class="insta-sccript">
@@ -71,5 +87,6 @@
         © 2023 YOONSTAGRAM - CLONE PROJECT
     </p>
 </footer>
+<script src="/js/profile.js"></script>
 </body>
 </html>
