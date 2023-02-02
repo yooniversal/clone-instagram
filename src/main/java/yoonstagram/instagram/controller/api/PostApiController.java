@@ -1,7 +1,6 @@
 package yoonstagram.instagram.controller.api;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,10 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
 import yoonstagram.instagram.domain.*;
 import yoonstagram.instagram.domain.dto.*;
-import yoonstagram.instagram.service.CommentService;
-import yoonstagram.instagram.service.LikeService;
-import yoonstagram.instagram.service.NotificationService;
-import yoonstagram.instagram.service.PostService;
+import yoonstagram.instagram.service.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,13 +18,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Slf4j
 public class PostApiController {
 
+    private final UserService userService;
     private final PostService postService;
     private final LikeService likeService;
     private final CommentService commentService;
     private final NotificationService notificationService;
+    private final FollowService followService;
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<?> postInfo (@PathVariable("postId") Long postId,
@@ -84,12 +81,28 @@ public class PostApiController {
     }
 
     @GetMapping("/post/likes")
-    public ResponseEntity<?> getLikesPost(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> getLikesPostOfUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         User currentUser = principalDetails.getUser();
         List<Like> likes = likeService.findLikesWithUser(currentUser.getId());
         List<LikeDto> likeDtos = new ArrayList<>();
         for(Like like : likes) {
             LikeDto likeDto = new LikeDto(like);
+            likeDtos.add(likeDto);
+        }
+        return new ResponseEntity<>(likeDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/post/likes/{postId}")
+    public ResponseEntity<?> getLikesPost(@PathVariable("postId") Long postId,
+                                          @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Long currentUserId = principalDetails.getUser().getId();
+        List<Like> likes = likeService.findLikesWithPostId(postId);
+        List<LikeDto> likeDtos = new ArrayList<>();
+        for(Like like : likes) {
+            Long likeUserId = like.getUser().getId();
+            List<User> followings = followService.getFollowings(currentUserId);
+            boolean follow = followings.contains(userService.findOneById(likeUserId));
+            LikeDto likeDto = new LikeDto(like, currentUserId.equals(likeUserId), follow);
             likeDtos.add(likeDto);
         }
         return new ResponseEntity<>(likeDtos, HttpStatus.OK);

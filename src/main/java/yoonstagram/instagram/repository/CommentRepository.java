@@ -3,7 +3,6 @@ package yoonstagram.instagram.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import yoonstagram.instagram.domain.Comment;
-import yoonstagram.instagram.domain.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;

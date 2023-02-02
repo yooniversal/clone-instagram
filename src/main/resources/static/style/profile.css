@@ -458,7 +458,11 @@ span.post-time {
     align-items: center;
 }
 
-.modal-following {
+.modal-likes {
+    z-index: 110;
+}
+
+.modal-following, .modal-likes {
     position: fixed;
     top: 0;
     left: 0;
@@ -469,7 +473,8 @@ span.post-time {
     align-items: center;
     justify-content: center;
 }
-.modal-following .subscribe {
+.modal-following .subscribe,
+.modal-likes .subscribe {
     width: 600px;
     height: 500px;
     background-color: #fff;
@@ -477,58 +482,71 @@ span.post-time {
     display: flex;
     flex-direction: column;
 }
-.modal-following .subscribe .subscribe-header {
+.modal-following .subscribe .subscribe-header,
+.modal-likes .subscribe .subscribe-header{
     text-align: center;
     line-height: 50px;
     font-weight: bold;
     border-bottom: 1px solid #ddd;
     position: relative;
 }
-.modal-following .subscribe .subscribe-header button {
+.modal-following .subscribe .subscribe-header button,
+.modal-likes .subscribe .subscribe-header button {
     position: absolute;
     right: 15px;
     top: 15px;
     background-color: transparent;
     border: 0;
 }
-.modal-following .subscribe .subscribe-header button i {
+.modal-following .subscribe .subscribe-header button i,
+.modal-likes .subscribe .subscribe-header button i {
     font-size: 20px;
 }
-.modal-following .subscribe .subscribe-list {
+.modal-following .subscribe .subscribe-list,
+.modal-upload .subscribe .subscribe-list {
     overflow: hidden;
     overflow-y: auto;
 }
-.modal-following .subscribe .subscribe-list .subscribe__item {
+.modal-following .subscribe .subscribe-list .subscribe__item,
+.modal-likes .subscribe .subscribe-list .subscribe__item {
     display: flex;
     height: 80px;
     padding: 10px;
     align-items: center;
 }
-.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__img {
+.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__img,
+.modal-likes .subscribe .subscribe-list .subscribe__item .subscribe__img {
     width: 80px;
     text-align: center;
 }
-.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__img {
-    width: 80px;
-    text-align: center;
-}
-.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__img img {
+.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__img img,
+.modal-likes .subscribe .subscribe-list .subscribe__item .subscribe__img img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
 }
-.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__text {
+.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__text,
+.modal-likes .subscribe .subscribe-list .subscribe__item .subscribe__text {
     padding-top: 5px;
 }
-.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__text h2 {
+.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__text h2,
+.modal-likes .subscribe .subscribe-list .subscribe__item .subscribe__text h2 {
     font-size: 16px;
     line-height: 50px;
 }
-.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__btn {
+.modal-following .subscribe .subscribe-list .subscribe__item .subscribe__btn,
+.modal-likes .subscribe .subscribe-list .subscribe__item .subscribe__btn {
     margin-left: auto;
     display: flex;
     align-items: center;
+}
+#likesOfPostModalList button {
+    background-color: #0095f6;
+    color: white;
+}
+#likesOfPostModalList button:hover {
+    background: #0478d0 !important;
 }
 
 .modal-post {
@@ -588,6 +606,7 @@ span.post-time {
     padding: 10px;
 }
 .post-text-area {
+    position: relative;
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -1066,4 +1085,7 @@ img.comment-pic {
 }
 #user-delete-form button {
     width: 150px;
+}
+.heart:hover, .like-text:hover {
+    cursor: pointer;
 }

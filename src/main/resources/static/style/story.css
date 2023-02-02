@@ -265,6 +265,7 @@ header {
     height: 40px;
     padding: 0 16px;
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: space-between;
 }
@@ -489,6 +490,7 @@ ul.story-list .profile-text {
     color: gray;
 }
 .post-text-area {
+    position: relative;
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -549,6 +551,9 @@ ul.story-list .profile-text {
     font-family: "Malgun Gothic", "Segoe UI", "Montserrat", sans-serif;
     width: 70px;
     position: absolute;
-    left: 25px;
-    top: 3px;
+    left: 24px;
+}
+#search-like-text {
+    left: 40px;
+    top: 11px;
 }

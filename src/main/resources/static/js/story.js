@@ -36,13 +36,11 @@ function getStoryItem(post) {
             <div class="icons-react">
                 <div class="icons-left">`;
             if(post.likeState) {
-                item += `<i class="fas fa-heart heart active" id="storyLikeIcon-${post.id}" onclick="toggleLikeHome(${post.id})">
-                             <span class="like-text">좋아요 <span id="likeCount-${post.id}" style="font-size:inherit;">${post.likeCount}</span>개</span>
-                         </i>`;
+                item += `<i class="fas fa-heart heart active" id="storyLikeIcon-${post.id}" onclick="toggleLikeHome(${post.id})"></i>
+                         <span class="like-text" id="search-like-text" onclick="postLikeInfoModal(${post.id})">좋아요 <span id="likeCount-${post.id}" style="font-size:inherit;">${post.likeCount}</span>개</span>`;
             } else {
-                item += `<i class="far fa-heart heart" id="storyLikeIcon-${post.id}" onclick="toggleLikeHome(${post.id})">
-                            <span class="like-text">좋아요 <span id="likeCount-${post.id}" style="font-size:inherit;">${post.likeCount}</span>개</span>
-                         </i>`;
+                item += `<i class="far fa-heart heart" id="storyLikeIcon-${post.id}" onclick="toggleLikeHome(${post.id})"></i>
+                         <span class="like-text" id="search-like-text" onclick="postLikeInfoModal(${post.id})">좋아요 <span id="likeCount-${post.id}" style="font-size:inherit;">${post.likeCount}</span>개</span>`;
             }
             item += `
                 </div>

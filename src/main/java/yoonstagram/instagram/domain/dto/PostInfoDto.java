@@ -2,8 +2,6 @@ package yoonstagram.instagram.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import yoonstagram.instagram.domain.Comment;
-import yoonstagram.instagram.domain.User;
 
 import java.time.LocalDateTime;
 import java.util.List;

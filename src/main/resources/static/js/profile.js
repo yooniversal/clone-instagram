@@ -342,13 +342,11 @@ function getPostModalInfo(postInfoDto, postId) {
 	    <div class="post-info">
 	        <div class="text post-text-area"> `;
             if(postInfoDto.likeState) {
-                item += `<i class="fas fa-heart heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
-                            <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
-                         </i>`;
+                item += `<i class="fas fa-heart heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})"></i>
+                         <span class="like-text" onclick="postLikeInfoModal(${postInfoDto.id})">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>`;
             } else {
-                item += `<i class="far fa-heart heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
-                             <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
-                         </i>`;
+                item += `<i class="far fa-heart heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})"></i>
+                         <span class="like-text" onclick="postLikeInfoModal(${postInfoDto.id})">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>`;
             }
             item += `
             </div>
@@ -912,4 +910,43 @@ function deletePost() {
     }).fail(error => {
         console.log("[post 삭제] 실패", error);
     });
+}
+
+function postLikeInfoModal(postId) {
+    $("#likesOfPostModalList").empty();
+    $(".modal-likes").css("display", "flex");
+
+    $.ajax({
+        url: `/api/post/likes/` + postId,
+        dataType: "json"
+    }).done(res => {
+        res.forEach((likeDto) => {
+            let item = getLikesOfPostModalItem(likeDto);
+            $("#likesOfPostModalList").append(item);
+        });
+    }).fail(error => {
+        console.log("[post 좋아요 정보] 불러오기 오류", error);
+    });
+}
+
+function getLikesOfPostModalItem(likeDto) {
+    let item = `<div class="subscribe__item" id="subscribeModalItem-${likeDto.userId}">
+	<div class="subscribe__img">
+		<a href="/user/profile?id=${likeDto.userId}" ><img src="/profile_imgs/${likeDto.userImageUrl}" onerror="this.src='/img/default_profile.jpg';" /></a>
+	</div>
+	<div class="subscribe__text">
+		<h2>${likeDto.username}</h2>
+	</div>
+	<div class="subscribe__btn">`;
+    if(!likeDto.login){
+        if(likeDto.follow){
+            item += `<button class="cta cta-follow" onclick="toggleSubscribe(${likeDto.userId}, this)">팔로잉</button>`;
+        }else{
+            item += `<button class="cta cta-follow" onclick="toggleSubscribe(${likeDto.userId}, this)">팔로우</button>`;
+        }
+    }
+    item += `
+	</div>
+</div>`;
+    return item;
 }

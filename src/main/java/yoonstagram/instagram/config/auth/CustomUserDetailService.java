@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
-import yoonstagram.instagram.config.auth.PrincipalDetails;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.repository.UserRepository;
 

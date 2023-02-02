@@ -2,9 +2,7 @@ package yoonstagram.instagram.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import yoonstagram.instagram.domain.Like;
-import yoonstagram.instagram.domain.Post;
 
 import javax.persistence.EntityManager;
 import java.util.List;

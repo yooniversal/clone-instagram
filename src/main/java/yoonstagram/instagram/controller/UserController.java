@@ -1,7 +1,6 @@
 package yoonstagram.instagram.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +16,6 @@ import yoonstagram.instagram.service.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -135,9 +133,7 @@ public class UserController {
 
     @DeleteMapping("/user/delete")
     public String userDelete(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        log.info("deleteevent!");
         userService.delete(principalDetails.getUser().getId());
-        log.info("deleteevent! end");
         return "redirect:/login";
     }
 

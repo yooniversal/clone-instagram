@@ -1,7 +1,6 @@
 package yoonstagram.instagram.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -109,6 +107,8 @@ public class UserService {
     public void delete(Long userId) {
 
         User currentUser = userRepository.findOneById(userId);
+
+        // 팔로잉 정보 삭제
         List<User> followings = followService.getFollowings(userId);
         for (User following : followings) {
             Long followingUserId = following.getId();

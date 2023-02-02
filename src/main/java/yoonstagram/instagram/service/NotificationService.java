@@ -8,7 +8,6 @@ import yoonstagram.instagram.domain.NotificationStatus;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.repository.NotificationRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service

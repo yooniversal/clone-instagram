@@ -53,6 +53,17 @@
   </div>
 </div>
 <!--포스트 상세 정보 모달 end-->
+<div class="modal-likes">
+  <div class="subscribe">
+    <div class="subscribe-header">
+      <span>좋아요</span>
+      <button class="exit" onclick="closePopup('.modal-likes')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="subscribe-list" id="likesOfPostModalList"></div>
+  </div>
+</div>
 <footer th:replace="layout/common :: footer('footer')"></footer>
 </body>
 <script th:inline="javascript">

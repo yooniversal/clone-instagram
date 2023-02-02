@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yoonstagram.instagram.domain.User;
 
-import javax.validation.constraints.NotEmpty;
-
 @Getter @Setter
 @NoArgsConstructor
 public class UserDto {

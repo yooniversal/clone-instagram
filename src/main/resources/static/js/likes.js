@@ -5,9 +5,6 @@ function storyLoad() {
         url: `/api/post/likes`,
         dataType: "json"
     }).done(res => {
-        if(res.totalElements == 0) {
-
-        }
         res.forEach((post) => {
             let postItem = getLikesItem(post);
             $("#img-box").append(postItem);
@@ -81,13 +78,11 @@ function getPostModalInfo(postInfoDto) {
 	    <div class="post-info">
 	        <div class="text"> `;
     if(postInfoDto.likeState) {
-        item += `<i class="fas fa-heart heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
-                     <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
-                 </i>`;
+        item += `<i class="fas fa-heart heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})"></i>
+                 <span class="like-text" onclick="postLikeInfoModal(${postInfoDto.id})">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>`;
     } else {
-        item += `<i class="far fa-heart heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
-                    <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
-                 </i>`;
+        item += `<i class="far fa-heart heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})"></i>
+                 <span class="like-text" onclick="postLikeInfoModal(${postInfoDto.id})">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>`;
     }
     item += `
             </div>

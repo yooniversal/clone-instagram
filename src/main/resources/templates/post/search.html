@@ -21,6 +21,17 @@
       <div class="upload-main-block" id="uploadPostInfoModal"></div>
     </div>
   </div>
+  <div class="modal-likes">
+    <div class="subscribe">
+      <div class="subscribe-header">
+        <span>좋아요</span>
+        <button class="exit" onclick="closePopup('.modal-likes')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="subscribe-list" id="likesOfPostModalList"></div>
+    </div>
+  </div>
   <div class="main-right">
     <div class="myProfile">
       <a th:href="@{/user/profile(id=${currentUserDto.id})}" ><img class="pic" th:src="@{${'/profile_imgs/' + currentUserDto.imageUrl}}" onerror="this.src='/img/default_profile.jpg'; "/></a>
