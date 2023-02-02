@@ -29,6 +29,12 @@ public class LikeRepository {
                 .getResultList();
     }
 
+    public List<Like> findLikesWithPostId(Long postId) {
+        return em.createQuery("select l from Like l join l.post p where p.id = :postId", Like.class)
+                .setParameter("postId", postId)
+                .getResultList();
+    }
+
     public Like findLike(long postId, Long userId) {
         return em.createQuery("select l " +
                                 "from Like l " +
@@ -47,4 +53,5 @@ public class LikeRepository {
         em.flush();
         em.clear();
     }
+
 }

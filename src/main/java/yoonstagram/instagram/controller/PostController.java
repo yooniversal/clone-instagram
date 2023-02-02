@@ -99,8 +99,8 @@ public class PostController {
         return "post/likes";
     }
 
-    @GetMapping("/post/search")
-    public String searchTag(@RequestParam("tag") String tag,
+    @GetMapping("/post/search/{tag}")
+    public String searchTag(@PathVariable("tag") String tag,
                             Model model,
                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
         User currentUser = principalDetails.getUser();

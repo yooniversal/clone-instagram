@@ -107,21 +107,37 @@
   <div class="modal-info">
     <div class="modal">
       <button onclick="location.href='/user/update'">회원정보 변경</button>
+      <button onclick="popup('.user-quit-modal')">회원탈퇴</button>
       <button onclick="location.href='/logout'">로그아웃</button>
       <button onclick="closePopup('.modal-info')">취소</button>
     </div>
   </div>
   <!--로그아웃, 회원정보 변경 모달 end-->
 
-  <!--로그아웃, 회원정보 변경 모달-->
+  <!-- 회원탈퇴 모달-->
+  <div class="user-quit-modal" style="z-index: 110;">
+    <div class="modal" style="width:350px;">
+      <form th:action="@{/user/delete}" id="user-delete-form" th:method="delete">
+        <div style="border-bottom: 1px solid #dbdbdb;">
+          <div style="margin-top: 10px; font-weight: bold;">정말로 삭제하시겠습니까?</div>
+          <div style="margin-bottom: 10px;">삭제된 정보는 복구할 수 없습니다.</div>
+        </div>
+        <button type="submit" style="border-right: 1px solid #dbdbdb;">삭제</button>
+        <button type="button" onclick="closePopup('.user-quit-modal')">취소</button>
+      </form>
+    </div>
+  </div>
+  <!--회원탈퇴 모달 end-->
+
+  <!--게시물 설정 모달-->
   <div class="post-edit-modal-info" style="z-index: 110;">
     <div class="modal" style="width: 300px;">
       <button onclick="editPostPopup('.modal-edit'), closePopup('.post-edit-modal-info')">수정</button>
-      <button onclick="deletePost(), closePopup('.post-edit-modal-info')">삭제</button>
+      <button onclick="deletePost(), reloadPage()">삭제</button>
       <button onclick="closePopup('.post-edit-modal-info')">취소</button>
     </div>
   </div>
-  <!--로그아웃, 회원정보 변경 모달 end-->
+  <!--게시물 설정 모달 end-->
 
   <!--업로드 상세 정보 모달-->
   <div class="modal-upload" id="modal-upload">

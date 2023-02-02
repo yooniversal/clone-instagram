@@ -44,7 +44,7 @@ p, span {
 .search-box, .notification-box {
     display: none;
     position: fixed;
-    width: 405px;
+    width: 420px;
     height: 100%;
     background: white;
     border-radius: 17px;
@@ -66,5 +66,7 @@ p, span {
     border-top: 1px solid #DBDBDB;
 }
 .notification-info {
+    height: 100%;
     border-top: 1px solid #DBDBDB;
+    overflow-y: auto;
 }

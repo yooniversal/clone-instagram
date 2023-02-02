@@ -31,4 +31,14 @@ public class NotificationService {
     public void cancel(Long userId, NotificationStatus status, Long targetId) {
         notificationRepository.cancel(userId, status, targetId);
     }
+
+    @Transactional
+    public void deleteWithPostId(Long postId) {
+        notificationRepository.deleteWithPostId(postId);
+    }
+
+    @Transactional
+    public void deleteWithUserId(Long userId) {
+        notificationRepository.deleteWithUserId(userId);
+    }
 }

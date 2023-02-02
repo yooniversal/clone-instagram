@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import yoonstagram.instagram.controller.UserForm;
-import yoonstagram.instagram.domain.Post;
-import yoonstagram.instagram.domain.User;
+import yoonstagram.instagram.domain.*;
 import yoonstagram.instagram.repository.UserRepository;
 
 import java.io.File;
@@ -26,6 +25,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final PostService postService;
+    private final FollowService followService;
+    private final LikeService likeService;
+    private final CommentService commentService;
+    private final NotificationService notificationService;
 
     @Transactional
     public Long join(User user) {
@@ -77,7 +82,7 @@ public class UserService {
     public void updateProfile(UserForm form, MultipartFile file) {
         User user = userRepository.findOneById(form.getId());
 
-        if(file != null && !file.isEmpty()) { //파일이 업로드 되었는지 확인
+        if(file != null && !file.isEmpty()) { // 파일이 업로드 되었는지 확인
             String imageFileName = user.getId() + "_" + file.getOriginalFilename();
             Path imageFilePath = Paths.get(uploadProfileFolder + imageFileName);
             try {
@@ -100,4 +105,60 @@ public class UserService {
         user.setPhone(form.getPhone());
     }
 
+    @Transactional
+    public void delete(Long userId) {
+
+        User currentUser = userRepository.findOneById(userId);
+        List<User> followings = followService.getFollowings(userId);
+        for (User following : followings) {
+            Long followingUserId = following.getId();
+            followService.unFollow(currentUser.getId(), followingUserId);
+            notificationService.cancel(currentUser.getId(), NotificationStatus.FOLLOW, followingUserId);
+        }
+
+        // 팔로워 정보 삭제
+        List<User> followers = followService.getFollowers(currentUser.getId());
+        for (User follower : followers) {
+            Long followerUserId = follower.getId();
+            followService.unFollow(followerUserId, currentUser.getId());
+            notificationService.cancel(followerUserId, NotificationStatus.FOLLOW, currentUser.getId());
+        }
+
+        // 좋아요 삭제
+        List<Like> likes = likeService.findLikesWithUser(currentUser.getId());
+        for (Like like : likes)
+            likeService.unLikes(like.getPost().getId(), currentUser.getId());
+
+        // 댓글 삭제
+        List<Comment> comments = commentService.findCommentsWithUser(currentUser.getId());
+        for (Comment comment : comments)
+            commentService.deleteComment(comment.getId());
+
+        // 게시물 삭제 관리
+        List<Post> posts = postService.getPostsOfUser(userId);
+        for (Post post : posts) {
+            List<Comment> postComments = post.getComment();
+
+            // 댓글 삭제
+            for(Comment comment : postComments) {
+                commentService.deleteComment(comment.getId());
+            }
+
+            // 좋아요 삭제
+            List<Like> postLikes = likeService.findLikesWithPostId(post.getId());
+            for (Like like : postLikes) {
+                likeService.unLikes(like.getPost().getId(), like.getUser().getId());
+            }
+
+            // 알림 삭제
+            notificationService.deleteWithPostId(post.getId());
+            notificationService.deleteWithUserId(userId);
+
+            // 게시물 삭제
+            postService.delete(post.getId());
+        }
+
+        // 유저 삭제
+        userRepository.delete(userId);
+    }
 }

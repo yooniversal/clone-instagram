@@ -123,6 +123,10 @@ public class PostService {
         return postRepository.findWithTag(tag);
     }
 
+    public Long getPostCountWithTag(String tag) {
+        return postRepository.findPostCountWithTag(tag);
+    }
+
     @Transactional
     public void update(PostUpdateDto postUpdateDto) {
         Post post = postRepository.findOneById(postUpdateDto.getId());

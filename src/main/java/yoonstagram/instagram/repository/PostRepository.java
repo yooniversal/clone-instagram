@@ -6,6 +6,7 @@ import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
@@ -44,5 +45,15 @@ public class PostRepository {
                 .executeUpdate();
         em.flush();
         em.clear();
+    }
+
+    public Long findPostCountWithTag(String tag) {
+        try {
+            return (Long) em.createQuery("select COUNT(p) from Post p where p.tag like concat('%', :tag, '%')")
+                    .setParameter("tag", tag)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return 0L;
+        }
     }
 }

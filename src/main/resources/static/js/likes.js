@@ -81,9 +81,13 @@ function getPostModalInfo(postInfoDto) {
 	    <div class="post-info">
 	        <div class="text"> `;
     if(postInfoDto.likeState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+        item += `<i class="fas fa-heart heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
+                     <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
+                 </i>`;
     } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+        item += `<i class="far fa-heart heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
+                    <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
+                 </i>`;
     }
     item += `
             </div>
@@ -126,39 +130,39 @@ function getPostModalInfo(postInfoDto) {
     return item;
 }
 function toggleLike(postId) {
-    let likeIcon = $("#storyLikeIcon");
+    let likeIcon = $(`#storyLikeIcon-${postId}`);
 
-    if (likeIcon.hasClass("far")) { // 좋아요 하겠다
+    if (likeIcon.hasClass("far")) { // 좋아요
         $.ajax({
             type: "post",
             url: `/api/post/${postId}/likes`,
             dataType: "text"
-        }).done(res=>{
-            let likeCountStr = $("#storyLikeIcon").text();
+        }).done(res =>{
+            let likeCountStr = $(`#likeCount-${postId}`).html();
             let likeCount = Number(likeCountStr) + 1;
-            $("#storyLikeIcon").text(likeCount);
+            $(`#likeCount-${postId}`).html(likeCount);
 
             likeIcon.addClass("fas");
             likeIcon.addClass("active");
             likeIcon.removeClass("far");
         }).fail(error=>{
-            console.log("오류", error);
+            console.log("[좋아요] 오류", error);
         });
-    } else { // 좋아요취소 하겠다
+    } else { // 좋아요 취소
         $.ajax({
             type: "delete",
             url: `/api/post/${postId}/likes`,
             dataType: "text"
-        }).done(res=>{
-            let likeCountStr = $("#storyLikeIcon").text();
+        }).done(res =>{
+            let likeCountStr = $(`#likeCount-${postId}`).html();
             let likeCount = Number(likeCountStr) - 1;
-            $("#storyLikeIcon").text(likeCount);
+            $(`#likeCount-${postId}`).html(likeCount);
 
             likeIcon.removeClass("fas");
             likeIcon.removeClass("active");
             likeIcon.addClass("far");
         }).fail(error=>{
-            console.log("오류", error);
+            console.log("[좋아요 취소] 오류", error);
         });
     }
 }

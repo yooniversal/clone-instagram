@@ -8,8 +8,8 @@
 /*프로필셋팅 섹션*/
 .setting-container {
     width: 700px;
-    margin: 0 auto;
-    border: 1px solid gainsboro;
+    margin: 0 50px 100px;
+    border: 1px solid #d8d8d800;
     margin-top: 30px;
     /*display: flex;*/
     border-radius: 4px;
@@ -57,6 +57,12 @@
 .setting-container .setting__content .content-item__01 .item__btn h2 {
     font-size: 18px;
 }
+.item__username {
+    margin-top: 25px;
+    margin-left: 7px;
+    font-family: "Segoe UI", "Montserrat", sans-serif;
+    font-weight: bold;
+}
 
 /*form 입력요소 타이틀*/
 .setting-container .setting__content div .item__title {
@@ -64,9 +70,9 @@
     padding-right: 30px;
     padding-bottom: 5px;
     text-align: right;
-    font-size: 17px;
+    font-size: 14px;
     font-weight: 600;
-    padding-top: 2px;
+    padding-top: 5px;
 }
 
 /*form 입력요소 인풋박스*/
@@ -82,7 +88,7 @@
     height: 32px;
     padding: 0 10px;
     border-radius: 3px;
-    font-size: 16px;
+    font-size: 15px;
     object-fit: cover;
 }
 
@@ -91,24 +97,24 @@
     border: 1px solid #dbdbdb;
     padding: 5px 10px;
     border-radius: 3px;
-    font-size: 16px;
+    font-size: 15px;
 }
 
-/* 비즈니스나 반려동물 어쩌고*/
+/* 비즈니스나 반려동물 etc*/
 .setting-container .setting__content div .item__input span {
     color: #8e8e8e;
     font-size: 12px;
     padding-top: 10px;
 }
 
-/*제출버튼*/
+/*제출 버튼*/
 .setting-container .setting__content .content-item__11 .item__input {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-/*제출버튼*/
+/*제출 버튼*/
 .setting-container .setting__content .content-item__11 .item__input button {
     border: 0;
     background-color: #0095f6;
@@ -125,4 +131,17 @@
 
 .input_update {
     width: 270px;
+}
+
+#edit-profile-image-button {
+    margin: 0;
+}
+
+#edit-profile-image-button:hover,
+#btn_update:hover {
+    background: #0478d0 !important;
+}
+
+#profileImgUrl {
+    display: none;
 }

@@ -28,6 +28,10 @@ public class LikeService {
         return likeRepository.findLikesWithUser(userId);
     }
 
+    public List<Like> findLikesWithPostId(Long postId) {
+        return likeRepository.findLikesWithPostId(postId);
+    }
+
     @Transactional
     public void likes(long postId, Long userId) {
         Post post = postRepository.findOneById(postId);
@@ -46,4 +50,5 @@ public class LikeService {
         post.setLikeCount(post.getLikeCount() - 1);
         likeRepository.deleteLike(like.getId());
     }
+
 }

@@ -535,3 +535,20 @@ ul.story-list .profile-text {
     font-size: 14px;
     color: #262626;
 }
+.active {
+    color: #ff6c6c;
+}
+.heart {
+    font-size: 18px;
+    position: relative;
+}
+.like-text {
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: "Malgun Gothic", "Segoe UI", "Montserrat", sans-serif;
+    width: 70px;
+    position: absolute;
+    left: 25px;
+    top: 3px;
+}

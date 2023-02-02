@@ -40,9 +40,13 @@ function getStoryItem(post) {
             <div class="icons-react">
                 <div class="icons-left">`;
             if(post.likeState) {
-                item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})"> ${post.likeCount}</i>`;
+                item += `<i class="fas fa-heart heart active" id="storyLikeIcon-${post.id}" onclick="toggleLikeHome(${post.id})">
+                            <span class="like-text">좋아요 <span id="likeCount-${post.id}" style="font-size:inherit;">${post.likeCount}</span>개</span>
+                         </i>`;
             } else {
-                item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})"> ${post.likeCount}</i>`;
+                item += `<i class="far fa-heart heart" id="storyLikeIcon-${post.id}" onclick="toggleLikeHome(${post.id})">
+                            <span class="like-text">좋아요 <span id="likeCount-${post.id}" style="font-size:inherit;">${post.likeCount}</span>개</span>
+                         </i>`;
             }
             item += `
                 </div>
@@ -135,15 +139,15 @@ $(window).scroll(() => {
 function toggleLike(postId) {
     let likeIcon = $(`#storyLikeIcon-${postId}`);
 
-    if (likeIcon.hasClass("far")) { // 좋아요 하겠다
+    if (likeIcon.hasClass("far")) { // 좋아요
         $.ajax({
             type: "post",
             url: `/api/post/${postId}/likes`,
             dataType: "text"
         }).done(res=>{
-            let likeCountStr = $(`#storyLikeIcon-${postId}`).text();
+            let likeCountStr = $(`#likeCount-${postId}`).html();
             let likeCount = Number(likeCountStr) + 1;
-            $(`#storyLikeIcon-${postId}`).text(likeCount);
+            $(`#likeCount-${postId}`).html(likeCount);
 
             likeIcon.addClass("fas");
             likeIcon.addClass("active");
@@ -151,15 +155,15 @@ function toggleLike(postId) {
         }).fail(error=>{
             console.log("오류", error);
         });
-    } else { // 좋아요 취소 하겠다
+    } else { // 좋아요 취소
         $.ajax({
             type: "delete",
             url: `/api/post/${postId}/likes`,
             dataType: "text"
         }).done(res=>{
-            let likeCountStr = $(`#storyLikeIcon-${postId}`).text();
+            let likeCountStr = $(`#likeCount-${postId}`).html();
             let likeCount = Number(likeCountStr) - 1;
-            $(`#storyLikeIcon-${postId}`).text(likeCount);
+            $(`#likeCount-${postId}`).html(likeCount);
 
             likeIcon.removeClass("fas");
             likeIcon.removeClass("active");

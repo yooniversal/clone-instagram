@@ -8,17 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
-import yoonstagram.instagram.domain.Like;
-import yoonstagram.instagram.domain.Notification;
-import yoonstagram.instagram.domain.Post;
-import yoonstagram.instagram.domain.User;
+import yoonstagram.instagram.domain.*;
 import yoonstagram.instagram.domain.dto.NotificationDto;
 import yoonstagram.instagram.domain.dto.PostInfoDto;
 import yoonstagram.instagram.domain.dto.UserProfileDto;
-import yoonstagram.instagram.service.FollowService;
-import yoonstagram.instagram.service.LikeService;
-import yoonstagram.instagram.service.NotificationService;
-import yoonstagram.instagram.service.UserService;
+import yoonstagram.instagram.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +23,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
     private final FollowService followService;
     private final LikeService likeService;
+    private final CommentService commentService;
     private final NotificationService notificationService;
 
     @GetMapping("/user/profile")
@@ -52,7 +48,7 @@ public class UserController {
         // 좋아요 게시물 처리
         List<Like> likes = likeService.findLikesWithUser(id);
         List<PostInfoDto> postDtos = new ArrayList<>();
-        for(Like like : likes) {
+        for (Like like : likes) {
             Post post = like.getPost();
             PostInfoDto postDto = new PostInfoDto();
             postDto.setId(post.getId());
@@ -135,6 +131,14 @@ public class UserController {
         model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
 
         return "user/notification";
+    }
+
+    @DeleteMapping("/user/delete")
+    public String userDelete(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        log.info("deleteevent!");
+        userService.delete(principalDetails.getUser().getId());
+        log.info("deleteevent! end");
+        return "redirect:/login";
     }
 
     @GetMapping("/common")

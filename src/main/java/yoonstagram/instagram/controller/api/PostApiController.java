@@ -148,8 +148,6 @@ public class PostApiController {
     @DeleteMapping("/post/delete/{postId}")
     public ResponseEntity<?> postDelete(@PathVariable("postId") Long postId) {
 
-        log.info("postDelete call@@ postId:{}", postId);
-
         Post post = postService.findOneById(postId);
         List<Comment> comments = post.getComment();
 
@@ -164,10 +162,11 @@ public class PostApiController {
             likeService.unLikes(like.getPost().getId(), like.getUser().getId());
         }
 
+        // 알림 삭제
+        notificationService.cancel(post.getUser().getId(), NotificationStatus.LIKE, postId);
+
         // 게시물 삭제
         postService.delete(postId);
-
-        log.info("삭제됨");
 
         return new ResponseEntity<>("게시물 삭제 성공", HttpStatus.OK);
     }

@@ -13,8 +13,8 @@
   <!--게시물 컨섹션-->
   <section id="tab-content" class="likes-section">
     <!--게시물 컨테이너-->
-    <div class="profileContainer">
-      <!--그냥 감싸는 div (지우면이미지커짐)-->
+    <div class="profileContainer" id="profile-container-post">
+      <!--그냥 감싸는 div (지우면 이미지 커짐)-->
       <div id="tab-1-content" class="tab-content-item show">
         <!--게시물 그리드 배열-->
         <div class="tab-1-content-inner" id ="popular-box">
@@ -31,8 +31,23 @@
     <div class="upload-main-block" id="uploadPostInfoModal"></div>
   </div>
 </div>
+<!--게시물 설정 모달-->
+<div class="post-edit-modal-info" style="z-index: 110;">
+  <div class="modal" style="width: 300px;">
+    <button onclick="editPostPopup('.modal-edit'), closePopup('.post-edit-modal-info')">수정</button>
+    <button onclick="deletePost(), reloadPage()">삭제</button>
+    <button onclick="closePopup('.post-edit-modal-info')">취소</button>
+  </div>
+</div>
+<!--게시물 설정 모달 end-->
+<!-- 게시물 수정 모달 -->
+<div class="modal-edit" id="modal-edit" style="z-index: 110;">
+  <div class="model-edit-post" id="model-edit-post">
+    <div class="upload-main-block" id="editPostModal"></div>
+  </div>
+</div>
 <!--포스트 상세 정보 모달-->
-<div class="modal-post">
+<div class="modal-post" id="modal-post">
   <div class="subscribe">
     <div class="subscribe-list" id="postInfoModal"></div>
   </div>

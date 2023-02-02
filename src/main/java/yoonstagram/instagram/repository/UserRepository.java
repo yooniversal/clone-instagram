@@ -43,4 +43,12 @@ public class UserRepository {
                 .setParameter("name", name)
                 .getResultList();
     }
+
+    public void delete(Long userId) {
+        em.createQuery("delete from User u where u.id = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+        em.flush();
+        em.clear();
+    }
 }

@@ -687,19 +687,28 @@ button.submit-comment:focus {
     color: #262626;
     font-weight: bold;
     background: transparent;
+
+    width: 75px;
+    height: 32px;
+    font-size: 14px;
+    background: #eee;
+    border: 0;
+    margin-top: 12px;
+    border-radius: 8px;
 }
 .cta-follow.blue {
     background: #0095f6 !important;
     color: #fff !important;
 }
 .cta-follow:enabled:hover {
+    background: #CCCCCC;
     cursor: pointer;
 }
 .exit:enabled:hover {
     cursor: pointer;
 }
 
-.modal-info, .post-edit-modal-info {
+.modal-info, .post-edit-modal-info, .user-quit-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -711,7 +720,8 @@ button.submit-comment:focus {
     justify-content: center;
 }
 .modal-info .modal,
-.post-edit-modal-info .modal {
+.post-edit-modal-info .modal,
+.user-quit-modal .modal {
     width: 400px;
     background-color: #fff;
     border-radius: 10px;
@@ -719,7 +729,8 @@ button.submit-comment:focus {
     flex-direction: column;
 }
 .modal-info .modal button,
-.post-edit-modal-info .modal button {
+.post-edit-modal-info .modal button,
+.user-quit-modal .modal button {
     border: 0;
     background-color: transparent;
     height: 48px;
@@ -761,7 +772,8 @@ button.submit-comment:focus {
     align-content: center;
     position: relative;
     top: 10px;
-    margin-left: 5px;
+    margin-left: 12px;
+    margin-right: 3px;
 }
 
 .description-class {
@@ -1047,4 +1059,11 @@ img.comment-pic {
     margin-top: 10px;
     width: 40px;
     height: 40px;
+}
+#user-delete-form {
+    text-align: center;
+    font-size: 14px;
+}
+#user-delete-form button {
+    width: 150px;
 }

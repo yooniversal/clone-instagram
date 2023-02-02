@@ -64,6 +64,9 @@ img.logo_instagram {
     font-size: 14px;
     font-weight: 600;
 }
+#btn_login:hover {
+    background: #0478d0 !important;
+}
 #btn_login:disabled {
     background-color: #B9DFFC;
 }

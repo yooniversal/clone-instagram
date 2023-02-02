@@ -64,9 +64,9 @@ function getfollowModalItem(follow) {
 	<div class="subscribe__btn">`;
     if(!follow.loginUser){
         if(follow.follow){
-            item += `<button class="cta-follow" onclick="toggleSubscribe(${follow.id}, this)">팔로잉</button>`;
+            item += `<button class="cta cta-follow" onclick="toggleSubscribe(${follow.id}, this)">팔로잉</button>`;
         }else{
-            item += `<button class="cta-follow" onclick="toggleSubscribe(${follow.id}, this)">팔로우</button>`;
+            item += `<button class="cta cta-follow" onclick="toggleSubscribe(${follow.id}, this)">팔로우</button>`;
         }
     }
     item += `
@@ -86,6 +86,9 @@ function postEditPopup(obj, postId) {
 
 function closePopup(obj) {
     $(obj).css("display", "none");
+}
+
+function reloadPage() {
     location.reload();
 }
 
@@ -339,9 +342,13 @@ function getPostModalInfo(postInfoDto, postId) {
 	    <div class="post-info">
 	        <div class="text post-text-area"> `;
             if(postInfoDto.likeState) {
-                item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})"> ${postInfoDto.likeCount}</i>`;
+                item += `<i class="fas fa-heart heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
+                            <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
+                         </i>`;
             } else {
-                item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})"> ${postInfoDto.likeCount}</i>`;
+                item += `<i class="far fa-heart heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
+                             <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
+                         </i>`;
             }
             item += `
             </div>
@@ -391,15 +398,15 @@ function getPostModalInfo(postInfoDto, postId) {
 function toggleLike(postId) {
     let likeIcon = $("#storyLikeIcon");
 
-    if (likeIcon.hasClass("far")) { // 좋아요 하겠다
+    if (likeIcon.hasClass("far")) { // 좋아요
         $.ajax({
             type: "post",
             url: `/api/post/${postId}/likes`,
             dataType: "text"
-        }).done(res=>{
-            let likeCountStr = $("#storyLikeIcon").text();
+        }).done(res =>{
+            let likeCountStr = $("#likeCount").html();
             let likeCount = Number(likeCountStr) + 1;
-            $("#storyLikeIcon").text(likeCount);
+            $("#likeCount").html(likeCount);
 
             likeIcon.addClass("fas");
             likeIcon.addClass("active");
@@ -412,16 +419,54 @@ function toggleLike(postId) {
             type: "delete",
             url: `/api/post/${postId}/likes`,
             dataType: "text"
-        }).done(res=>{
-            let likeCountStr = $("#storyLikeIcon").text();
+        }).done(res =>{
+            let likeCountStr = $("#likeCount").html();
             let likeCount = Number(likeCountStr) - 1;
-            $("#storyLikeIcon").text(likeCount);
+            $("#likeCount").html(likeCount);
 
             likeIcon.removeClass("fas");
             likeIcon.removeClass("active");
             likeIcon.addClass("far");
         }).fail(error=>{
             console.log("오류", error);
+        });
+    }
+}
+
+function toggleLikeHome(postId) {
+    let likeIcon = $(`#storyLikeIcon-${postId}`);
+
+    if (likeIcon.hasClass("far")) { // 좋아요
+        $.ajax({
+            type: "post",
+            url: `/api/post/${postId}/likes`,
+            dataType: "text"
+        }).done(res =>{
+            let likeCountStr = $(`#likeCount-${postId}`).html();
+            let likeCount = Number(likeCountStr) + 1;
+            $(`#likeCount-${postId}`).html(likeCount);
+
+            likeIcon.addClass("fas");
+            likeIcon.addClass("active");
+            likeIcon.removeClass("far");
+        }).fail(error=>{
+            console.log("[좋아요] 오류", error);
+        });
+    } else { // 좋아요 취소
+        $.ajax({
+            type: "delete",
+            url: `/api/post/${postId}/likes`,
+            dataType: "text"
+        }).done(res =>{
+            let likeCountStr = $(`#likeCount-${postId}`).html();
+            let likeCount = Number(likeCountStr) - 1;
+            $(`#likeCount-${postId}`).html(likeCount);
+
+            likeIcon.removeClass("fas");
+            likeIcon.removeClass("active");
+            likeIcon.addClass("far");
+        }).fail(error=>{
+            console.log("[좋아요 취소] 오류", error);
         });
     }
 }
@@ -727,16 +772,35 @@ function goSearch(input) {
     $.ajax({
         url: "/api/search/" + input,
         dataType: "json"
-    }).done(res => {
+    }).done(searchDto => {
+
         // 검색 결과 초기화
         $("#search-result").empty()
 
-        let item = ``
-        res.forEach((userDto) => {
+        // 태그 정보
+        let item = `
+                    <div class="search-friend-profile"">
+                        <a href="/post/search/${input}">
+                            <img class="img-profile pic" src="/img/tag.png">
+                        </a>
+                        <div class="search-profile-text">
+                            <span class="search-user-name">
+                                #${input}
+                            </span>
+                            <span class="search-user-username">
+                                게시물 ${searchDto.count}개
+                            </span>
+                        </div>
+                    </div>
+                    `;
+
+        // 사용자 프로필
+        searchDto.userDtos.forEach((userDto) => {
             item += getSearchItem(userDto);
         });
 
         $("#search-result").append(item);
+
     }).fail(error => {
         console.log("[search] 불러오기 오류", error);
     });

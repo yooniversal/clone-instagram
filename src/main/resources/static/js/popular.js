@@ -87,7 +87,7 @@ function getPostModalInfo(postInfoDto) {
             <span>${postInfoDto.postUploader.name}</span> `;
     item += `<button class="exit" onclick="modalClose()"><i class="fas fa-times"></i></button>`
     if(postInfoDto.uploader) {
-        item += `<button class="edit" onclick="location.href='/post/update/${postInfoDto.id}'"><i class="far fa-edit"></i></button>`
+        item += `<button class="edit" onclick="postEditPopup('.post-edit-modal-info', ${postId})'"><i class="far fa-edit"></i></button>`
     }
     item += `
     </div>
@@ -100,9 +100,13 @@ function getPostModalInfo(postInfoDto) {
             <div class="post-info">
                     <div class="text post-text-area"> `;
             if(postInfoDto.likeState) {
-                item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
+                item += `<i class="fas fa-heart heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
+                            <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
+                         </i>`;
             } else {
-                item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
+                item += `<i class="far fa-heart heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">
+                             <span class="like-text">좋아요 <span id="likeCount" style="font-size:inherit;">${postInfoDto.likeCount}</span>개</span>
+                         </i>`;
             }
             item += `
                     </div>
@@ -153,15 +157,15 @@ function getPostModalInfo(postInfoDto) {
 function toggleLike(postId) {
     let likeIcon = $("#storyLikeIcon");
 
-    if (likeIcon.hasClass("far")) { // 좋아요 하겠다
+    if (likeIcon.hasClass("far")) { // 좋아요
         $.ajax({
             type: "post",
             url: `/api/post/${postId}/likes`,
             dataType: "text"
         }).done(res=>{
-            let likeCountStr = $("#storyLikeIcon").text();
+            let likeCountStr = $("#likeCount").html();
             let likeCount = Number(likeCountStr) + 1;
-            $("#storyLikeIcon").text(likeCount);
+            $("#likeCount").html(likeCount);
 
             likeIcon.addClass("fas");
             likeIcon.addClass("active");
@@ -169,15 +173,15 @@ function toggleLike(postId) {
         }).fail(error=>{
             console.log("오류", error);
         });
-    } else { // 좋아요취소 하겠다
+    } else { // 좋아요 취소
         $.ajax({
             type: "delete",
             url: `/api/post/${postId}/likes`,
             dataType: "text"
         }).done(res=>{
-            let likeCountStr = $("#storyLikeIcon").text();
+            let likeCountStr = $("#likeCount").html();
             let likeCount = Number(likeCountStr) - 1;
-            $("#storyLikeIcon").text(likeCount);
+            $("#likeCount").html(likeCount);
 
             likeIcon.removeClass("fas");
             likeIcon.removeClass("active");

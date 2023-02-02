@@ -7,19 +7,23 @@ import yoonstagram.instagram.domain.Comment;
 import yoonstagram.instagram.domain.Post;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.repository.CommentRepository;
+import yoonstagram.instagram.repository.PostRepository;
+import yoonstagram.instagram.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final UserService userService;
-    private final PostService postService;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     @Transactional
     public Comment save(Long userId, Long postId, String content) {
-        User user = userService.findOneById(userId);
-        Post post = postService.findOneById(postId);
+        User user = userRepository.findOneById(userId);
+        Post post = postRepository.findOneById(postId);
         Comment comment = new Comment(user, post, content);
         post.getComment().add(comment);
         commentRepository.save(comment);
@@ -27,8 +31,13 @@ public class CommentService {
         return comment;
     }
 
+    public List<Comment> findCommentsWithUser(Long userId) {
+        return commentRepository.getCommentsOfUser(userId);
+    }
+
     @Transactional
     public void deleteComment(Long commentId) {
         commentRepository.delete(commentId);
     }
+
 }

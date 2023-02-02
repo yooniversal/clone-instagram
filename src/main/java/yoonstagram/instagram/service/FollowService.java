@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import yoonstagram.instagram.domain.Follow;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.repository.FollowRepository;
+import yoonstagram.instagram.repository.UserRepository;
 
 import java.util.List;
 
@@ -14,19 +15,19 @@ import java.util.List;
 public class FollowService {
 
     private final FollowRepository followRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Transactional
     public void follow(Long fromUserId, Long toUserId) {
-        User fromUser = userService.findOneById(fromUserId);
-        User toUser = userService.findOneById(toUserId);
+        User fromUser = userRepository.findOneById(fromUserId);
+        User toUser = userRepository.findOneById(toUserId);
         followRepository.follow(fromUser, toUser);
     }
 
     @Transactional
     public void unFollow(Long fromUserId, Long toUserId) {
-        User fromUser = userService.findOneById(fromUserId);
-        User toUser = userService.findOneById(toUserId);
+        User fromUser = userRepository.findOneById(fromUserId);
+        User toUser = userRepository.findOneById(toUserId);
         followRepository.unfollow(fromUser, toUser);
     }
 

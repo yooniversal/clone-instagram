@@ -1,14 +1,12 @@
 package yoonstagram.instagram.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import yoonstagram.instagram.domain.Follow;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.domain.dto.UserProfileDto;
 import yoonstagram.instagram.service.FollowService;
@@ -17,7 +15,6 @@ import yoonstagram.instagram.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -31,8 +28,6 @@ public class HomeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Long currentUserId = Long.valueOf(userDetails.getUsername());
-
-        log.info("currentUserId:{}", currentUserId);
 
         User currentUser = userService.findOneById(currentUserId);
         model.addAttribute("currentUserId", currentUser.getId());
