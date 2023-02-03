@@ -34,19 +34,27 @@ public class FollowRepository {
     }
 
     public List<User> getFollowers(Long userId) {
-        return em.createQuery("select f.fromUser from Follow f where f.toUser.id = :userId", User.class)
+        return em.createQuery("select fUser from Follow f " +
+                        "join fetch f.fromUser fUser " +
+                        "join fetch f.toUser tUser " +
+                        "where tUser.id = :userId", User.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }
 
     public List<User> getFollowings(Long userId) {
-        return em.createQuery("select f.toUser from Follow f where f.fromUser.id = :userId", User.class)
+        return em.createQuery("select tUser from Follow f " +
+                        "join fetch f.fromUser fUser " +
+                        "join fetch f.toUser tUser " +
+                        "where fUser.id = :userId", User.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }
 
     public List<User> getFollows(Long userId) {
-        return em.createQuery("select f from Follow f where f.fromUser.id = :userId", User.class)
+        return em.createQuery("select f from Follow f " +
+                        "join fetch f.fromUser fUser " +
+                        "where fUser.id = :userId", User.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }

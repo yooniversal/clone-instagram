@@ -23,8 +23,9 @@ public class NotificationRepository {
     }
 
     public List<Notification> notificationsWithUserId(Long userId) {
-        return em.createQuery("select n from Notification n join User u on n.user.id = u.id " +
-                "where u.id = :userId", Notification.class)
+        return em.createQuery("select n from Notification n " +
+                        "join fetch n.user u " +
+                        "where u.id = :userId", Notification.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }
