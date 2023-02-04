@@ -44,20 +44,6 @@ public class PostController {
         return "post/upload";
     }
 
-    @PostMapping("/post")
-    public String uploadPost(@ModelAttribute("UploadPostDto") UploadPostDto uploadPostDto,
-                             @RequestParam("uploadImgUrl") MultipartFile file,
-                             RedirectAttributes redirectAttributes,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Long userId = Long.valueOf(userDetails.getUsername());
-        postService.upload(uploadPostDto, file, userId);
-
-        redirectAttributes.addAttribute("id", principalDetails.getUser().getId());
-        return "redirect:/user/profile";
-    }
-
     @GetMapping("/post/update/{postId}")
     public String updatePost(@PathVariable("postId") Long postId,
                              Model model,

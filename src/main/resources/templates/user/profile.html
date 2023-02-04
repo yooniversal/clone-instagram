@@ -117,12 +117,12 @@
   <!-- 회원탈퇴 모달-->
   <div class="user-quit-modal" style="z-index: 110;">
     <div class="modal" style="width:350px;">
-      <form th:action="@{/user/delete}" id="user-delete-form" th:method="delete">
+      <form action="/logout" id="user-delete-form">
         <div style="border-bottom: 1px solid #dbdbdb;">
           <div style="margin-top: 10px; font-weight: bold;">정말로 삭제하시겠습니까?</div>
           <div style="margin-bottom: 10px;">삭제된 정보는 복구할 수 없습니다.</div>
         </div>
-        <button type="submit" style="border-right: 1px solid #dbdbdb;">삭제</button>
+        <button style="border-right: 1px solid #dbdbdb;" th:onclick="|deleteUser(${findUserDto.id})|">삭제</button>
         <button type="button" onclick="closePopup('.user-quit-modal')">취소</button>
       </form>
     </div>

@@ -24,8 +24,8 @@ public class LikeRepository {
     public List<Like> findLikesWithUser(Long userId) {
         return em.createQuery("select l from Like l " +
                         "join fetch l.user u " +
-                        "where u.id = :id", Like.class)
-                .setParameter("id", userId)
+                        "where u.id = :userId", Like.class)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
@@ -41,8 +41,7 @@ public class LikeRepository {
         return em.createQuery("select l from Like l " +
                                 "join fetch l.post p " +
                                 "join fetch l.user u " +
-                                "where p.id = :postId and u.id = :userId",
-                Like.class)
+                                "where p.id = :postId and u.id = :userId", Like.class)
                 .setParameter("postId", postId)
                 .setParameter("userId", userId)
                 .getSingleResult();

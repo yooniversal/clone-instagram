@@ -60,10 +60,7 @@ public class NotificationRepository {
     }
 
     public void deleteWithUserId(Long userId) {
-        em.createQuery("delete from Notification n where n.fromUser.id = :fromUserId")
-                .setParameter("fromUserId", userId)
-                .executeUpdate();
-        em.createQuery("delete from Notification n where n.user.id = :userId")
+        em.createQuery("delete from Notification n where n.fromUser.id = :userId or n.user.id = :userId")
                 .setParameter("userId", userId)
                 .executeUpdate();
         em.flush();

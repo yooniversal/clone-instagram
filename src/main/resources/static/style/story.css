@@ -320,6 +320,7 @@ ul.comments li {
     /*justify-content: space-between;*/
     color: #262626;
     font-size: 14px;
+    margin-bottom: 10px;
 }
 img.comment-heart {
     width: 12px;

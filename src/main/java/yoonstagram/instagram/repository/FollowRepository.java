@@ -7,6 +7,7 @@ import yoonstagram.instagram.domain.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,28 +35,28 @@ public class FollowRepository {
     }
 
     public List<User> getFollowers(Long userId) {
-        return em.createQuery("select fUser from Follow f " +
+        List<Follow> follows = em.createQuery("select f from Follow f " +
                         "join fetch f.fromUser fUser " +
                         "join fetch f.toUser tUser " +
-                        "where tUser.id = :userId", User.class)
+                        "where tUser.id = :userId", Follow.class)
                 .setParameter("userId", userId)
                 .getResultList();
+
+        return follows.stream()
+                .map(Follow::getFromUser)
+                .collect(Collectors.toList());
     }
 
     public List<User> getFollowings(Long userId) {
-        return em.createQuery("select tUser from Follow f " +
+        List<Follow> follows = em.createQuery("select f from Follow f " +
                         "join fetch f.fromUser fUser " +
                         "join fetch f.toUser tUser " +
-                        "where fUser.id = :userId", User.class)
+                        "where fUser.id = :userId", Follow.class)
                 .setParameter("userId", userId)
                 .getResultList();
-    }
 
-    public List<User> getFollows(Long userId) {
-        return em.createQuery("select f from Follow f " +
-                        "join fetch f.fromUser fUser " +
-                        "where fUser.id = :userId", User.class)
-                .setParameter("userId", userId)
-                .getResultList();
+        return follows.stream()
+                .map(Follow::getToUser)
+                .collect(Collectors.toList());
     }
 }

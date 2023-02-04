@@ -133,6 +133,7 @@ public class PostApiController {
                                         @RequestParam("uploadTag") String tag,
                                         @RequestParam("uploadImgUrl") MultipartFile file,
                                         @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
         User user = principalDetails.getUser();
 
         UploadPostDto uploadPostDto = new UploadPostDto();
@@ -145,16 +146,8 @@ public class PostApiController {
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<?> editPost(@RequestParam("postId") Long postId,
-                                      @RequestParam("text") String text,
-                                      @RequestParam("tag") String tag) {
-        PostUpdateDto postUpdateDto = new PostUpdateDto();
-        postUpdateDto.setId(postId);
-        postUpdateDto.setText(text);
-        postUpdateDto.setTag(tag);
-
+    public ResponseEntity<?> editPost(@ModelAttribute PostUpdateDto postUpdateDto) {
         postService.update(postUpdateDto);
-
         return new ResponseEntity<>("업데이트 성공", HttpStatus.OK);
     }
 

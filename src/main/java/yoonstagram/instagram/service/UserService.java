@@ -134,8 +134,11 @@ public class UserService {
         for (Comment comment : comments)
             commentService.deleteComment(comment.getId());
 
+        // 알림 삭제
+        notificationService.deleteWithUserId(currentUser.getId());
+
         // 게시물 삭제 관리
-        List<Post> posts = postService.getPostsOfUser(userId);
+        List<Post> posts = postService.getPostsOfUser(currentUser.getId());
         for (Post post : posts) {
             List<Comment> postComments = post.getComment();
 
@@ -152,7 +155,6 @@ public class UserService {
 
             // 알림 삭제
             notificationService.deleteWithPostId(post.getId());
-            notificationService.deleteWithUserId(userId);
 
             // 게시물 삭제
             postService.delete(post.getId());

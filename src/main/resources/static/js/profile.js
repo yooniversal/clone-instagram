@@ -193,6 +193,9 @@ function uploadToPost(formData) {
     formData.append("uploadText", textInput);
     formData.append("uploadTag", tagInput);
 
+    console.log(formData);
+    console.log(formData.get("uploadImgUrl"))
+
     $.ajax({
         type: "post",
         url: "/api/upload/",
@@ -219,10 +222,10 @@ function uploadMainModalInfo() {
 
     item += `
     <div class="post-box" id="post-box-full">
-	    <div class="upload-image-form" id="upload-logo">
-		    <img src="/img/upload-logo.png"/>
-	    </div>
-	    <div class="upload-image-description" id="upload-image">
+        <div class="upload-image-form" id="upload-logo">
+            <img src="/img/upload-logo.png"/>
+        </div>
+        <div class="upload-image-description" id="upload-image">
             사진과 동영상을 여기에 끌어다 놓으세요
         </div>
         <label for="upload-file" id="upload-image-input">
@@ -257,7 +260,7 @@ function uploadModalInfo(postInfoDto) {
               </div>
               <!--설명 end-->
               <!-- 사진 -->
-              <input type="file" style="display: none;" id="uploadImgUrl"/>
+<!--              <input type="file" style="display: none;" id="uploadImgUrl"/>-->
               <!-- 사진 end -->
             </form>
             <!--업로드 Form end-->
@@ -873,15 +876,15 @@ function editPostComplete(postId) {
     const textInput = document.getElementById("upload-text").value;
     const tagInput = document.getElementById("upload-tag").value;
 
-    let formData = new FormData();
-    formData.append("postId", postId);
-    formData.append("text", textInput);
-    formData.append("tag", tagInput);
+    let editFormData = new FormData();
+    editFormData.append("id", postId);
+    editFormData.append("text", textInput);
+    editFormData.append("tag", tagInput);
 
     $.ajax({
         type: "post",
         url: "/api/edit/",
-        data : formData,
+        data : editFormData,
         contentType : false,
         processData : false
     }).done(res => {
@@ -949,4 +952,15 @@ function getLikesOfPostModalItem(likeDto) {
 	</div>
 </div>`;
     return item;
+}
+
+function deleteUser(userId) {
+    $.ajax({
+        type: "delete",
+        url: "/api/user/delete/" + userId,
+    }).done(res => {
+        console.log("[회원탈퇴] 성공");
+    }).fail(error => {
+        console.log("[회원탈퇴] 실패", error);
+    });
 }

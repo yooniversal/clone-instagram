@@ -21,10 +21,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final PostService postService;
     private final FollowService followService;
     private final LikeService likeService;
-    private final CommentService commentService;
     private final NotificationService notificationService;
 
     @GetMapping("/user/profile")
@@ -131,11 +129,11 @@ public class UserController {
         return "user/notification";
     }
 
-    @DeleteMapping("/user/delete")
-    public String userDelete(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        userService.delete(principalDetails.getUser().getId());
-        return "redirect:/login";
-    }
+//    @DeleteMapping("/user/delete")
+//    public String userDelete(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+//        userService.delete(principalDetails.getUser().getId());
+//        return "redirect:/login";
+//    }
 
     @GetMapping("/common")
     public String common(Model model,

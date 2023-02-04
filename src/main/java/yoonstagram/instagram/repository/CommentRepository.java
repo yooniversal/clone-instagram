@@ -36,7 +36,9 @@ public class CommentRepository {
     }
 
     public List<Comment> getCommentsOfPost(Long postId) {
-        return em.createQuery("select c from Comment c join fetch c.post p on p.id = :postId", Comment.class)
+        return em.createQuery("select c from Comment c " +
+                        "join fetch c.post p " +
+                        "where p.id = :postId", Comment.class)
                 .setParameter("postId", postId)
                 .getResultList();
     }
