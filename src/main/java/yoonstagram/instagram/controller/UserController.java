@@ -62,7 +62,8 @@ public class UserController {
     @GetMapping("/user/update")
     public String userUpdatePage(Model model,
                                  @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        User currentUser = principalDetails.getUser();
+        Long currentUserId = principalDetails.getUser().getId();
+        User currentUser = userService.findOneById(currentUserId);
 
         UserForm userForm = new UserForm();
         userForm.setId(currentUser.getId());
