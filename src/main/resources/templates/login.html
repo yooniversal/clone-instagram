@@ -15,7 +15,7 @@
 <div class="container">
   <form th:action="@{/login}" th:object="${LoginUserDto}" method="post">
     <img class="logo_instagram" src="/img/logo_text.png" alt="instagram_logo">
-    <input type="text" class="username" name="username" id="username" placeholder="이메일">
+    <input type="text" class="username" name="username" id="username" placeholder="사용자 이름 또는 이메일">
     <input type="password" class="password" name="password" id="password" placeholder="비밀번호">
     <input type="submit" id="btn_login" value="로그인" />
   </form>
