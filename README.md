@@ -44,19 +44,19 @@
 | --- | --- |
 | ![로그인](https://user-images.githubusercontent.com/61930524/216841550-563111be-fb7c-4c60-99e6-6f127a126990.gif) |![프로필편집](https://user-images.githubusercontent.com/61930524/216841599-b57bb66b-ec73-434f-a260-a43972fb70d0.gif)
 
-| **업로드** | **좋아요** |
+| 업로드 | 좋아요 |
 | --- | --- |
 | ![업로드](https://user-images.githubusercontent.com/61930524/216841678-fd0826cd-cacb-41a5-ac37-fe1b4d758113.gif) |![좋아요](https://user-images.githubusercontent.com/61930524/216841721-ccb33a89-6300-47aa-896b-c2724961d769.gif)|
 
-| **팔로잉** | **알림** |
+| 알림 | 팔로잉 |
 | --- | --- |
-| <img src="https://user-images.githubusercontent.com/61930524/216841787-631aa403-8f4d-4eac-a865-e7b57f02c803.gif"  width="478.4px" height="233.22px"/> | ![알림](https://user-images.githubusercontent.com/61930524/216841805-b9f376d0-daf3-4af4-82cb-38df0d2c09d8.gif) |
+| ![알림](https://user-images.githubusercontent.com/61930524/216861716-68edba8e-f2a4-4ab6-a002-104dc0e29452.gif) | ![팔로잉](https://user-images.githubusercontent.com/61930524/216861703-2ddbe0f3-5284-41bd-91b5-881cf1f95dc8.gif) |
 
-| **탐색 탭** | **검색** |
+| 탐색 탭 | 검색 |
 | --- | --- |
 | ![탐색탭](https://user-images.githubusercontent.com/61930524/216841842-08fc1bfb-4afc-40f9-9909-394c61887408.gif) | ![검색및태그](https://user-images.githubusercontent.com/61930524/216841849-b91e986b-3000-426f-ba26-44afa08c25cf.gif) |
 
-| **댓글** | **게시물 수정** |
+| 댓글 | 게시물 수정 |
 | --- | --- |
 | ![댓글](https://user-images.githubusercontent.com/61930524/216860499-dbf80078-f241-4e6c-a976-3e3c5eaa6dce.gif) | ![수정](https://user-images.githubusercontent.com/61930524/216860537-8a86f159-ea9e-4742-b162-ddd00f5f56c7.gif)
  |
