@@ -1,4 +1,4 @@
-package yoonstagram.instagram.controller;
+package yoonstagram.instagram.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -260,7 +260,6 @@ function uploadModalInfo(postInfoDto) {
               </div>
               <!--설명 end-->
               <!-- 사진 -->
-<!--              <input type="file" style="display: none;" id="uploadImgUrl"/>-->
               <!-- 사진 end -->
             </form>
             <!--업로드 Form end-->
@@ -360,7 +359,7 @@ function getPostModalInfo(postInfoDto, postId) {
                     let arr = postInfoDto.tag.split(',');
 
                     for(let i = 0; i < arr.length; i++) {
-                        item += `<span class="tag-span" onclick="location.href='/post/search?tag=${arr[i]}'">#${arr[i]} </span>`;
+                        item += `<span class="tag-span" onclick="location.href='/post/search/${arr[i]}'">#${arr[i]} </span>`;
                     }
                     item += `
             </div>

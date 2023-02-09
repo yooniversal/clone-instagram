@@ -28,16 +28,6 @@ public class LoginController {
         return "login";
     }
 
-//    @PostMapping("/login")
-//    public String login(@ModelAttribute("LoginUserDto") LoginUserDto loginUserDto) {
-//        User findUser = userService.findByName(loginUserDto.getName());
-//        if(!findUser.getPassword().equals(bCryptPasswordEncoder.encode(loginUserDto.getPassword()))) {
-//            return "login";
-//        }
-//
-//        return "hello";
-//    }
-
     @GetMapping("/signUp")
     public String signUp(Model model) {
         model.addAttribute("userDto", new UserDto());

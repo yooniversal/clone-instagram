@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import yoonstagram.instagram.controller.UserForm;
+import yoonstagram.instagram.domain.dto.UserForm;
 import yoonstagram.instagram.domain.*;
 import yoonstagram.instagram.repository.UserRepository;
 

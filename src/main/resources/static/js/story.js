@@ -53,7 +53,7 @@ function getStoryItem(post) {
                     let arr = post.tag.split(',');
 
                     for(let i = 0; i < arr.length; i++) {
-                        item += `<span class="tag-span" onclick="location.href='/post/search?tag=${arr[i]}'">#${arr[i]} </span>`;
+                        item += `<span class="tag-span" onclick="location.href='/post/search/${arr[i]}'">#${arr[i]} </span>`;
                     }
                     item += `
                 </div>

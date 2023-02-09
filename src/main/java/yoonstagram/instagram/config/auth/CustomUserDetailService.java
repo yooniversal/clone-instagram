@@ -3,7 +3,6 @@ package yoonstagram.instagram.config.auth;
 import java.util.HashSet;
 import java.util.Set;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,6 @@ import lombok.AllArgsConstructor;
 import yoonstagram.instagram.domain.User;
 import yoonstagram.instagram.repository.UserRepository;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
@@ -29,7 +27,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-        log.info("entered name : {}", name);
         User user = userRepository.findByName(name).get(0);
 
         if (user != null) {

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import yoonstagram.instagram.config.auth.PrincipalDetails;
 import yoonstagram.instagram.domain.*;
-import yoonstagram.instagram.domain.dto.NotificationDto;
 import yoonstagram.instagram.domain.dto.PostInfoDto;
+import yoonstagram.instagram.domain.dto.UserForm;
 import yoonstagram.instagram.domain.dto.UserProfileDto;
 import yoonstagram.instagram.service.*;
 
@@ -23,7 +23,6 @@ public class UserController {
     private final UserService userService;
     private final FollowService followService;
     private final LikeService likeService;
-    private final NotificationService notificationService;
 
     @GetMapping("/user/profile")
     public String userProfile(@RequestParam Long id,
@@ -110,31 +109,6 @@ public class UserController {
         model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
         return "user/follow";
     }
-
-    @GetMapping("user/notification")
-    public String userNotification(Model model,
-                                   @AuthenticationPrincipal PrincipalDetails principalDetails) {
-
-        User currentUser = principalDetails.getUser();
-        List<Notification> notifications = notificationService.notificationsWithUser(currentUser.getId());
-        List<NotificationDto> notificationDtos = new ArrayList<>();
-        for(Notification notification : notifications) {
-            NotificationDto notificationDto = new NotificationDto(notification);
-            notificationDtos.add(notificationDto);
-        }
-
-        model.addAttribute("notificationDtos", notificationDtos);
-        model.addAttribute("currentUserId", currentUser.getId());
-        model.addAttribute("currentUserImageUrl", currentUser.getImageUrl());
-
-        return "user/notification";
-    }
-
-//    @DeleteMapping("/user/delete")
-//    public String userDelete(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-//        userService.delete(principalDetails.getUser().getId());
-//        return "redirect:/login";
-//    }
 
     @GetMapping("/common")
     public String common(Model model,

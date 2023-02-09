@@ -22,15 +22,15 @@ public class Oauth2DetailsService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = super.loadUser(userRequest);    //유저 정보 가져옴
+        OAuth2User oAuth2User = super.loadUser(userRequest); // 유저 정보 가져옴
         Map<String, Object> user_map = oAuth2User.getAttributes();
         String email = (String) user_map.get("email");
         String name = (String) user_map.get("name");
-        String password = new BCryptPasswordEncoder().encode(UUID.randomUUID().toString()); //랜덤한 비밀번호 생성
+        String password = new BCryptPasswordEncoder().encode(UUID.randomUUID().toString()); // 랜덤한 비밀번호 생성
 
         List<User> check_users = userRepository.findByEmail(email);
         if (check_users.size() == 0) {
-            //최초 로그인
+            // 최초 로그인
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
@@ -38,10 +38,10 @@ public class Oauth2DetailsService extends DefaultOAuth2UserService {
             user.setName(name);
             userRepository.save(user);
 
-            //oauth2로 로그인됬는지 구분할 수 있음
+            // OAuth2로 로그인 여부 구분 가능
             return new PrincipalDetails(user, user_map);
         } else {
-            //이미 회원가입 되어있음
+            // 이미 회원가입 되어있음
             User check_user = check_users.get(0);
             return new PrincipalDetails(check_user);
         }
