@@ -65,7 +65,7 @@ function getStoryItem(post) {
                                 <a href="/user/profile?id=${comment.userId}">
                                    <img class="comment-pic" src="/profile_imgs/${comment.imageUrl}" onerror="src='/img/default_profile.jpg'">
                                 </a>
-                                <span>
+                                <span id="comment-text">
                                    <span class="comment-span point-span">${comment.name}</span>${comment.text}
                                 </span>`;
                                 if(principalId == comment.userId) {
@@ -197,7 +197,7 @@ function addComment(postId) {
 		         <a href="/user/profile?id=${comment.userId}">
                         <img class="comment-pic" src="/profile_imgs/${comment.imageUrl}" onerror="src='/img/default_profile.jpg'">
                  </a>
-                 <span>
+                 <span id="comment-text">
                     <span class="comment-span point-span">${comment.name}</span>${comment.text}
                  </span>
                  <button onclick="deleteComment(${comment.id})" class="delete-comment-btn">

@@ -1089,3 +1089,6 @@ img.comment-pic {
 .heart:hover, .like-text:hover {
     cursor: pointer;
 }
+#comment-text {
+    margin-top: 5px;
+}
