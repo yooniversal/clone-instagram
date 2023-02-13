@@ -19,7 +19,6 @@ import javax.validation.Valid;
 public class LoginController {
 
     private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/login")
     public String login(@RequestParam(value="error", required = false) String error,
