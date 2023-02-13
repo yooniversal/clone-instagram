@@ -292,7 +292,7 @@ function modalCancelClose() {
 }
 
 function getPostModalInfo(postInfoDto, postId) {
-    let diffentTime = function () {
+    let diffTime = function () {
         const currentTime = new Date();
         const postTimeStamp = new Date(postInfoDto.date);
         const postTimeInMillis = postTimeStamp.getTime();
@@ -365,7 +365,7 @@ function getPostModalInfo(postInfoDto, postId) {
             </div>
         </div>
         <div class="subscribe__img post-text-area">
-            <span class="post-time">${diffentTime()}</span>
+            <span class="post-time">${diffTime()}</span>
         </div>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
@@ -597,7 +597,7 @@ function getNotificationItem(notificationDto) {
                 <div class="notification-profile-text" style="width: 240px; margin-right:5px;">
                     <span class="notification-profile-info">
                         ${msg}
-                        <span class="sub-span-notification">${diffentTime(notificationDto.time)}</span>
+                        <span class="sub-span-notification">${diffTime(notificationDto.time)}</span>
                     </span>
                 </div>
                 <button class="cta notification-follow" onclick="toggleSubscribe(${notificationDto.fromUserId}, this)">
@@ -607,7 +607,7 @@ function getNotificationItem(notificationDto) {
         info = `<div class="notification-profile-text">
                     <span class="notification-profile-info">
                         ${msg}
-                        <span class="sub-span-notification">${diffentTime(notificationDto.time)}</span>
+                        <span class="sub-span-notification">${diffTime(notificationDto.time)}</span>
                     </span>
                 </div>
                 <img class="notification-img" src="/upload/${notificationDto.postImageUrl}" />
@@ -625,7 +625,7 @@ function getNotificationItem(notificationDto) {
     return item;
 }
 
-function diffentTime(date) {
+function diffTime(date) {
     const currentTime = new Date();
     const postTimeStamp = new Date(date);
     const postTimeInMillis = postTimeStamp.getTime();
